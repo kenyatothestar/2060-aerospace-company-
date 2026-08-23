@@ -1,4 +1,4 @@
-// 2060 Mission Control
+// Database model - temporary development layer// 2060 Mission Control
 // Mission Data Model V1.0
 
 const mission = {
