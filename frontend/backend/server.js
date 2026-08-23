@@ -1,8 +1,10 @@
 // 2060 Mission Control
-// Mission Operations API V1.2
+// Mission Operations API V1.3
 
 const http = require("http");
-const mission = require("../database/mission");
+
+const missionStore =
+  require("../database/missionStore");
 
 function sendJSON(res, statusCode, data) {
   res.writeHead(statusCode, {
@@ -23,39 +25,31 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // System health
   if (req.method === "GET" && req.url === "/api/health") {
     sendJSON(res, 200, {
       system: "2060 Mission Control",
       status: "ONLINE",
-      version: "1.2.0",
+      version: "1.3.0",
       environment: "development"
     });
     return;
   }
 
-  // Mission information
   if (req.method === "GET" && req.url === "/api/mission") {
-    sendJSON(res, 200, mission);
+    sendJSON(res, 200, missionStore.getMission());
     return;
   }
 
-  // Telemetry
   if (req.method === "GET" && req.url === "/api/telemetry") {
-    sendJSON(res, 200, {
-      missionId: mission.missionId,
-      vehicleId: mission.vehicleId,
-      timestamp: new Date().toISOString(),
-      ...mission.telemetry
-    });
+    sendJSON(res, 200, missionStore.getTelemetry());
     return;
   }
 
-  // API information
   if (req.method === "GET" && req.url === "/api") {
     sendJSON(res, 200, {
       name: "2060 Mission Control API",
-      version: "1.2.0",
+      version: "1.3.0",
+      status: "ONLINE",
       endpoints: [
         "/api/health",
         "/api/mission",
