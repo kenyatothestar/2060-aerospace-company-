@@ -418,6 +418,36 @@ loadMissionData();
   }
 
   testMissionControlAPI();
+</script><script>
+const missionForm = document.getElementById("missionForm");
+const missionMessage = document.getElementById("missionMessage");
+
+if (missionForm) {
+  missionForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    missionMessage.textContent = "Sending mission...";
+
+    try {
+      const mission = await createMission(API_URL, {
+        missionName: document.getElementById("missionName").value,
+        vehicleId: document.getElementById("vehicleId").value,
+        launchSite: document.getElementById("launchSite").value
+      });
+
+      missionMessage.textContent =
+        "Mission created: " + mission.missionId;
+
+      missionForm.reset();
+
+    } catch (error) {
+      missionMessage.textContent =
+        "Mission API is not connected yet.";
+
+      console.error(error);
+    }
+  });
+}
 </script>
 </body>
         </html>
