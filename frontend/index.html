@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>2060 Mission Control</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #050912;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #0b1424;
+      border-bottom: 1px solid #263750;
+      padding: 18px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      color: #8da2bd;
+      font-size: 13px;
+    }
+
+    main {
+      padding: 16px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .status {
+      background: #07101d;
+      border: 1px solid #263750;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .status-title {
+      color: #38bdf8;
+      font-size: 13px;
+    }
+
+    .status-value {
+      color: #00ff99;
+      font-size: 25px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .card {
+      background: #07101d;
+      border: 1px solid #263750;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #38bdf8;
+      font-size: 15px;
+    }
+
+    .value {
+      font-size: 25px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .label {
+      color: #8da2bd;
+      font-size: 12px;
+    }
+
+    .online {
+      color: #00ff99;
+    }
+
+    .nominal {
+      color: #00ff99;
+    }
+
+    .mission {
+      margin-top: 16px;
+    }
+
+    .mission-line {
+      height: 8px;
+      background: #172338;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .mission-progress {
+      width: 0%;
+      height: 100%;
+      background: #38bdf8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🚀 2060 MISSION CONTROL</h1>
+  <p>Mission Operations Platform V1.0</p>
+</header>
+
+<main>
+
+  <section class="status">
+    <div class="status-title">
+      SYSTEM STATUS
+    </div>
+
+    <div class="status-value">
+      <span class="online">●</span> ONLINE
+    </div>
+  </section>
+
+
+  <section class="grid">
+
+    <div class="card">
+      <h2>MISSION</h2>
+
+      <div class="label">
+        Current Mission
+      </div>
+
+      <div class="value">
+        MC-001
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>VEHICLE</h2>
+
+      <div class="label">
+        Vehicle ID
+      </div>
+
+      <div class="value">
+        2060-X1
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>MISSION STATUS</h2>
+
+      <div class="label">
+        Current State
+      </div>
+
+      <div class="value nominal">
+        READY
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>ALTITUDE</h2>
+
+      <div class="label">
+        Current altitude
+      </div>
+
+      <div class="value">
+        0 km
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>SPEED</h2>
+
+      <div class="label">
+        Current velocity
+      </div>
+
+      <div class="value">
+        0 km/h
+      </div>
+    </div>
+
+
+    <div class="card">
+      <h2>FUEL</h2>
+
+      <div class="label">
+        Propellant remaining
+      </div>
+
+      <div class="value">
+        100%
+      </div>
+    </div>
+
+  </section>
+
+
+  <section class="card mission">
+
+    <h2>
+      MISSION PROGRESS
+    </h2>
+
+    <div class="label">
+      Mission readiness
+    </div>
+
+    <div class="mission-line">
+      <div class="mission-progress"></div>
+    </div>
+
+  </section>
+
+</main>
+
+
+<footer>
+  2060 Aerospace Systems • Mission Operations Platform
+</footer>
+
+</body>
+        </html>
