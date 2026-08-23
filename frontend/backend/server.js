@@ -101,7 +101,35 @@ const server =
       return;
     }
 
+// GET MISSION BY ID
 
+if (
+  req.method === "GET" &&
+  req.url.startsWith("/api/missions/")
+) {
+
+  const missionId =
+    req.url.split("/").pop();
+
+  const mission =
+    missionRegistry.getMissionById(
+      missionId
+    );
+
+  if (!mission) {
+
+    sendJSON(res, 404, {
+      error: "Mission not found",
+      missionId: missionId
+    });
+
+    return;
+  }
+
+  sendJSON(res, 200, mission);
+
+  return;
+}
     // API INFORMATION
 
     if (
