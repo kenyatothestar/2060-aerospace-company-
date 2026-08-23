@@ -100,7 +100,43 @@ const server =
 
       return;
     }
+// CREATE MISSION
 
+if (
+  req.method === "POST" &&
+  req.url === "/api/missions"
+) {
+
+  let body = "";
+
+  req.on("data", chunk => {
+    body += chunk;
+  });
+
+  req.on("end", () => {
+
+    try {
+
+      const data =
+        body ? JSON.parse(body) : {};
+
+      const mission =
+        missionRegistry.createMission(data);
+
+      sendJSON(res, 201, mission);
+
+    } catch (error) {
+
+      sendJSON(res, 400, {
+        error: "Invalid mission data"
+      });
+
+    }
+
+  });
+
+  return;
+        }
 // GET MISSION BY ID
 
 if (
