@@ -1,0 +1,12 @@
+{
+  "name": "2060-mission-control-api",
+  "version": "1.0.0",
+  "description": "2060 Mission Control backend API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "20.x"
+  }
+}
