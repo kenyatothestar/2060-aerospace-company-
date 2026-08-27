@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2060 Mission Control Login</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#020711;
+color:#eaf7ff;
+font-family:Arial,sans-serif;
+padding:20px
+}
+
+.box{
+width:100%;
+max-width:390px;
+background:#071321;
+border:1px solid #21445f;
+border-radius:10px;
+padding:30px;
+box-shadow:0 20px 60px #000
+}
+
+.logo{
+text-align:center;
+font-size:23px;
+font-weight:900;
+letter-spacing:2px
+}
+
+.logo span{
+color:#42d9ff
+}
+
+.sub{
+text-align:center;
+font-size:10px;
+letter-spacing:2px;
+color:#71899c;
+margin:10px 0 28px
+}
+
+label{
+display:block;
+font-size:10px;
+color:#7890a2;
+letter-spacing:1px;
+margin:14px 0 6px
+}
+
+input{
+width:100%;
+padding:13px;
+background:#030a12;
+border:1px solid #17334d;
+border-radius:5px;
+color:#fff;
+outline:none
+}
+
+input:focus{
+border-color:#42d9ff
+}
+
+button{
+width:100%;
+margin-top:20px;
+padding:13px;
+background:#062033;
+border:1px solid #42d9ff;
+border-radius:5px;
+color:#42d9ff;
+font-weight:bold;
+cursor:pointer
+}
+
+button:hover{
+background:#0b3048
+}
+
+#error{
+height:18px;
+text-align:center;
+color:#ff5872;
+font-size:12px;
+margin-top:12px
+}
+
+.demo{
+text-align:center;
+font-size:10px;
+color:#5f7789;
+margin-top:20px
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<div class="logo">
+🚀 2060 <span>SPACE TRAVEL</span>
+</div>
+
+<div class="sub">
+MISSION OPERATIONS CENTER
+</div>
+
+<form onsubmit="login(event)">
+
+<label>USERNAME</label>
+
+<input
+id="username"
+type="text"
+placeholder="Enter username"
+required
+>
+
+<label>PASSWORD</label>
+
+<input
+id="password"
+type="password"
+placeholder="Enter password"
+required
+>
+
+<div id="error"></div>
+
+<button type="submit">
+ENTER MISSION CONTROL
+</button>
+
+</form>
+
+<div class="demo">
+DEMO ACCESS: admin / 2060
+</div>
+
+</div>
+
+<script>
+
+function login(event){
+
+event.preventDefault();
+
+const username=
+document.getElementById("username").value.trim();
+
+const password=
+document.getElementById("password").value;
+
+if(username==="admin" && password==="2060"){
+
+window.location.href="index.html";
+
+}else{
+
+document.getElementById("error").textContent=
+"Invalid username or password";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
