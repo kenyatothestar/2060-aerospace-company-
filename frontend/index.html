@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2060 Mission Operations Center V3</title>
+<title>2060 Mission Control V4</title>
 
 <style>
 *{box-sizing:border-box}
@@ -12,7 +12,110 @@ body{
 margin:0;
 background:#020711;
 color:#eaf7ff;
-font-family:Arial,Helvetica,sans-serif;
+font-family:Arial,Helvetica,sans-serif
+}
+
+button,input{
+font:inherit
+}
+
+.login{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+background:
+radial-gradient(circle at center,#092033 0,#020711 55%,#000 100%)
+}
+
+.login-box{
+width:100%;
+max-width:390px;
+background:#071321;
+border:1px solid #21445f;
+border-radius:10px;
+padding:28px;
+box-shadow:0 20px 60px #000
+}
+
+.login-logo{
+text-align:center;
+font-size:22px;
+font-weight:900;
+letter-spacing:2px
+}
+
+.login-logo span{
+color:#42d9ff
+}
+
+.login-sub{
+text-align:center;
+color:#71899c;
+font-size:11px;
+letter-spacing:2px;
+margin:10px 0 25px
+}
+
+.field{
+margin-bottom:14px
+}
+
+.field label{
+display:block;
+font-size:10px;
+letter-spacing:1px;
+color:#7890a2;
+margin-bottom:6px
+}
+
+input{
+width:100%;
+padding:13px;
+background:#030a12;
+border:1px solid #17334d;
+border-radius:5px;
+color:white;
+outline:none
+}
+
+input:focus{
+border-color:#42d9ff
+}
+
+.login-btn{
+width:100%;
+padding:13px;
+border:1px solid #42d9ff;
+border-radius:5px;
+background:#062033;
+color:#42d9ff;
+font-weight:bold;
+cursor:pointer
+}
+
+.login-btn:hover{
+background:#0b3048
+}
+
+.login-error{
+height:20px;
+text-align:center;
+color:#ff5872;
+font-size:12px;
+margin:10px 0
+}
+
+.demo{
+text-align:center;
+font-size:10px;
+color:#5f7789;
+margin-top:18px
+}
+
+.app{
+display:none
 }
 
 header{
@@ -22,40 +125,55 @@ border-bottom:1px solid #17334d;
 display:flex;
 align-items:center;
 justify-content:space-between;
-padding:0 18px;
+padding:0 18px
 }
 
 .logo{
 font-weight:900;
-letter-spacing:2px;
+letter-spacing:2px
 }
 
 .logo span{
-color:#42d9ff;
+color:#42d9ff
+}
+
+.header-right{
+display:flex;
+align-items:center;
+gap:15px
 }
 
 .online{
 color:#49f3a4;
-font-size:12px;
+font-size:11px
+}
+
+.logout{
+padding:8px 12px;
+background:#210b12;
+border:1px solid #ff5872;
+color:#ff5872;
+border-radius:5px;
+cursor:pointer
 }
 
 .layout{
 display:grid;
 grid-template-columns:215px 1fr;
-min-height:calc(100vh - 64px);
+min-height:calc(100vh - 64px)
 }
 
 aside{
 background:#040a11;
 border-right:1px solid #17334d;
-padding:12px;
+padding:12px
 }
 
 .title{
 font-size:10px;
 letter-spacing:2px;
 color:#60798c;
-margin:15px 7px 7px;
+margin:15px 7px 7px
 }
 
 .menu{
@@ -64,29 +182,29 @@ margin:3px 0;
 color:#91a8ba;
 border-radius:5px;
 cursor:pointer;
-font-size:13px;
+font-size:13px
 }
 
 .menu:hover,
 .menu.active{
 background:#092235;
 color:#42d9ff;
-border-left:3px solid #42d9ff;
+border-left:3px solid #42d9ff
 }
 
 main{
 padding:18px;
 max-width:1500px;
 width:100%;
-margin:auto;
+margin:auto
 }
 
 .view{
-display:none;
+display:none
 }
 
 .view.active{
-display:block;
+display:block
 }
 
 .top{
@@ -94,34 +212,30 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 gap:15px;
-margin-bottom:15px;
+margin-bottom:15px
 }
 
 .kicker{
 color:#42d9ff;
 font-size:10px;
-letter-spacing:2px;
+letter-spacing:2px
 }
 
 h1{
 font-size:24px;
-margin:6px 0;
-}
-
-h2{
-font-size:20px;
+margin:6px 0
 }
 
 h3{
 font-size:11px;
 letter-spacing:2px;
-color:#91a8ba;
+color:#91a8ba
 }
 
 .buttons{
 display:flex;
 gap:7px;
-flex-wrap:wrap;
+flex-wrap:wrap
 }
 
 button{
@@ -131,23 +245,23 @@ color:#42d9ff;
 padding:10px 14px;
 border-radius:5px;
 font-weight:bold;
-cursor:pointer;
+cursor:pointer
 }
 
 button:hover{
-background:#0b3048;
+background:#0b3048
 }
 
 .abort{
 border-color:#ff5872;
 color:#ff5872;
-background:#210b12;
+background:#210b12
 }
 
 .cards{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:10px;
+gap:10px
 }
 
 .card,
@@ -155,38 +269,38 @@ gap:10px;
 background:#071321;
 border:1px solid #17334d;
 border-radius:8px;
-padding:16px;
+padding:16px
 }
 
 .card small{
 color:#71899c;
 font-size:10px;
-letter-spacing:1px;
+letter-spacing:1px
 }
 
 .value{
 font-size:26px;
 font-weight:bold;
 color:#42d9ff;
-margin-top:7px;
+margin-top:7px
 }
 
 .green{
-color:#49f3a4;
+color:#49f3a4
 }
 
 .grid{
 display:grid;
 grid-template-columns:1.3fr .7fr;
 gap:14px;
-margin-top:14px;
+margin-top:14px
 }
 
 .orbit{
 height:310px;
 position:relative;
 overflow:hidden;
-background:radial-gradient(circle,#12415f,#061624 28%,#020711 72%);
+background:radial-gradient(circle,#12415f,#061624 28%,#020711 72%)
 }
 
 .orbit:before,
@@ -197,17 +311,17 @@ left:50%;
 top:50%;
 transform:translate(-50%,-50%) rotate(-17deg);
 border:1px solid #42d9ff55;
-border-radius:50%;
+border-radius:50%
 }
 
 .orbit:before{
 width:78%;
-height:44%;
+height:44%
 }
 
 .orbit:after{
 width:53%;
-height:27%;
+height:27%
 }
 
 .earth{
@@ -215,7 +329,7 @@ position:absolute;
 left:50%;
 top:50%;
 transform:translate(-50%,-50%);
-font-size:62px;
+font-size:62px
 }
 
 .rocket{
@@ -223,14 +337,14 @@ position:absolute;
 left:70%;
 top:25%;
 font-size:25px;
-transition:all .8s linear;
+transition:all .8s linear
 }
 
 .status{
 font-size:27px;
 font-weight:bold;
 color:#49f3a4;
-margin:18px 0;
+margin:18px 0
 }
 
 .row{
@@ -238,30 +352,30 @@ display:flex;
 justify-content:space-between;
 padding:11px 0;
 border-bottom:1px solid #142b3d;
-color:#9bb0c1;
+color:#9bb0c1
 }
 
 .timeline{
 display:grid;
 grid-template-columns:repeat(5,1fr);
-gap:7px;
+gap:7px
 }
 
 .step{
 border-top:3px solid #284257;
 padding-top:10px;
 font-size:10px;
-color:#70889a;
+color:#70889a
 }
 
 .step.done{
 border-color:#49f3a4;
-color:#49f3a4;
+color:#49f3a4
 }
 
 .step.current{
 border-color:#42d9ff;
-color:#42d9ff;
+color:#42d9ff
 }
 
 .log{
@@ -272,7 +386,7 @@ padding:10px;
 font-family:monospace;
 font-size:12px;
 line-height:1.8;
-color:#8ca5b7;
+color:#8ca5b7
 }
 
 .bar{
@@ -280,72 +394,64 @@ height:10px;
 background:#102536;
 border-radius:10px;
 overflow:hidden;
-margin-top:8px;
+margin-top:8px
 }
 
 .fill{
 height:100%;
 width:0;
 background:#42d9ff;
-transition:width .5s;
+transition:width .5s
 }
 
 .big{
 font-size:42px;
 font-weight:bold;
-color:#42d9ff;
+color:#42d9ff
 }
 
 .table{
 width:100%;
 border-collapse:collapse;
-font-size:13px;
+font-size:13px
 }
 
 .table th,
 .table td{
 text-align:left;
 padding:12px 8px;
-border-bottom:1px solid #17334d;
+border-bottom:1px solid #17334d
 }
 
 .table th{
 color:#6f879a;
 font-size:10px;
-letter-spacing:1px;
+letter-spacing:1px
 }
 
 .good{
-color:#49f3a4;
-}
-
-.warn{
-color:#ffd166;
-}
-
-.danger{
-color:#ff5872;
+color:#49f3a4
 }
 
 .form{
 display:grid;
 grid-template-columns:1fr 1fr 1fr auto;
-gap:8px;
+gap:8px
 }
 
-input,select{
+select{
 width:100%;
 padding:11px;
 background:#030a12;
 border:1px solid #17334d;
 border-radius:5px;
-color:#fff;
+color:#fff
 }
 
 .history-item{
 padding:12px;
 border-bottom:1px solid #17334d;
-color:#9bb0c1;
+color:#9bb0c1
 }
 
 footer{
@@ -354,13 +460,13 @@ padding:25px;
 margin-top:20px;
 border-top:1px solid #17334d;
 font-size:11px;
-color:#60788b;
+color:#60788b
 }
 
 @media(max-width:850px){
 
 .layout{
-grid-template-columns:1fr;
+grid-template-columns:1fr
 }
 
 aside{
@@ -368,27 +474,27 @@ display:flex;
 overflow-x:auto;
 gap:5px;
 border-right:0;
-border-bottom:1px solid #17334d;
+border-bottom:1px solid #17334d
 }
 
 .title{
-display:none;
+display:none
 }
 
 .menu{
-white-space:nowrap;
+white-space:nowrap
 }
 
 .cards{
-grid-template-columns:1fr 1fr;
+grid-template-columns:1fr 1fr
 }
 
 .grid{
-grid-template-columns:1fr;
+grid-template-columns:1fr
 }
 
 .form{
-grid-template-columns:1fr;
+grid-template-columns:1fr
 }
 
 }
@@ -396,19 +502,19 @@ grid-template-columns:1fr;
 @media(max-width:500px){
 
 .cards{
-grid-template-columns:1fr;
+grid-template-columns:1fr
 }
 
 .top{
-display:block;
+display:block
 }
 
 .buttons{
-margin-top:12px;
+margin-top:12px
 }
 
 .timeline{
-grid-template-columns:1fr 1fr;
+grid-template-columns:1fr 1fr
 }
 
 }
@@ -417,17 +523,93 @@ grid-template-columns:1fr 1fr;
 
 <body>
 
+<!-- LOGIN -->
+
+<div class="login" id="loginScreen">
+
+<div class="login-box">
+
+<div class="login-logo">
+🚀 2060 <span>SPACE TRAVEL</span>
+</div>
+
+<div class="login-sub">
+MISSION OPERATIONS CENTER
+</div>
+
+<form onsubmit="login(event)">
+
+<div class="field">
+
+<label>USERNAME</label>
+
+<input
+id="username"
+type="text"
+placeholder="Enter username"
+autocomplete="username"
+required>
+
+</div>
+
+<div class="field">
+
+<label>PASSWORD</label>
+
+<input
+id="password"
+type="password"
+placeholder="Enter password"
+autocomplete="current-password"
+required>
+
+</div>
+
+<div class="login-error" id="loginError"></div>
+
+<button class="login-btn" type="submit">
+ENTER MISSION CONTROL
+</button>
+
+</form>
+
+<div class="demo">
+DEMO ACCESS • admin / 2060
+</div>
+
+</div>
+
+</div>
+
+
+<!-- APPLICATION -->
+
+<div class="app" id="app">
+
 <header>
 
 <div class="logo">
 🚀 2060 <span>MISSION OPERATIONS CENTER</span>
 </div>
 
+<div class="header-right">
+
 <div class="online">
-● ONLINE
+● SYSTEM ONLINE
+</div>
+
+<div id="userDisplay">
+ADMIN
+</div>
+
+<button class="logout" onclick="logout()">
+LOGOUT
+</button>
+
 </div>
 
 </header>
+
 
 <div class="layout">
 
@@ -471,10 +653,9 @@ grid-template-columns:1fr 1fr;
 
 </aside>
 
+
 <main>
 
-
-<!-- FLIGHT DIRECTOR -->
 
 <section id="flight" class="view active">
 
@@ -502,6 +683,7 @@ MISSION OPERATIONS CENTER
 
 </div>
 
+
 <div class="cards">
 
 <div class="card">
@@ -526,6 +708,7 @@ MISSION OPERATIONS CENTER
 
 </div>
 
+
 <div class="grid">
 
 <div class="panel">
@@ -543,6 +726,7 @@ MISSION OPERATIONS CENTER
 </div>
 
 </div>
+
 
 <div class="panel">
 
@@ -581,14 +765,19 @@ COMMUNICATION
 
 </div>
 
+
 <div class="panel" style="margin-top:14px">
 
 <h3>MISSION PROGRESS</h3>
 
-<div id="progressText">0%</div>
+<div id="progressText">
+0%
+</div>
 
 <div class="bar">
+
 <div class="fill" id="progressBar"></div>
+
 </div>
 
 </div>
@@ -596,11 +785,11 @@ COMMUNICATION
 </section>
 
 
-<!-- TELEMETRY -->
-
 <section id="telemetry" class="view">
 
-<div class="kicker">LIVE VEHICLE DATA</div>
+<div class="kicker">
+LIVE VEHICLE DATA
+</div>
 
 <h1>TELEMETRY</h1>
 
@@ -633,9 +822,7 @@ COMMUNICATION
 <h3>TELEMETRY STREAM</h3>
 
 <div class="log" id="telemetryLog">
-
-[TELEMETRY] Waiting for vehicle data...<br>
-
+[TELEMETRY] Waiting for vehicle data...
 </div>
 
 </div>
@@ -643,11 +830,11 @@ COMMUNICATION
 </section>
 
 
-<!-- ORBIT -->
-
 <section id="orbit" class="view">
 
-<div class="kicker">NAVIGATION</div>
+<div class="kicker">
+NAVIGATION
+</div>
 
 <h1>ORBIT & TRAJECTORY</h1>
 
@@ -692,11 +879,11 @@ COMMUNICATION
 </section>
 
 
-<!-- SYSTEMS -->
-
 <section id="systems" class="view">
 
-<div class="kicker">VEHICLE HEALTH</div>
+<div class="kicker">
+VEHICLE HEALTH
+</div>
 
 <h1>SYSTEMS</h1>
 
@@ -753,11 +940,11 @@ COMMUNICATION
 </section>
 
 
-<!-- COMMUNICATIONS -->
-
 <section id="communications" class="view">
 
-<div class="kicker">MISSION NETWORK</div>
+<div class="kicker">
+MISSION NETWORK
+</div>
 
 <h1>COMMUNICATIONS</h1>
 
@@ -790,12 +977,10 @@ COMMUNICATION
 <h3>COMMUNICATION LOG</h3>
 
 <div class="log">
-
 [LINK] Ground station connection established<br>
 [LINK] Vehicle handshake complete<br>
 [LINK] Telemetry channel active<br>
 [LINK] Command channel ready<br>
-
 </div>
 
 </div>
@@ -803,11 +988,11 @@ COMMUNICATION
 </section>
 
 
-<!-- ANALYTICS -->
-
 <section id="analytics" class="view">
 
-<div class="kicker">MISSION PERFORMANCE</div>
+<div class="kicker">
+MISSION PERFORMANCE
+</div>
 
 <h1>ANALYTICS</h1>
 
@@ -839,32 +1024,21 @@ COMMUNICATION
 
 <h3>MISSION PERFORMANCE</h3>
 
-<p class="good">
-● Guidance performance nominal
-</p>
-
-<p class="good">
-● Propulsion performance nominal
-</p>
-
-<p class="good">
-● Communication performance nominal
-</p>
-
-<p class="good">
-● Vehicle health nominal
-</p>
+<p class="good">● Guidance performance nominal</p>
+<p class="good">● Propulsion performance nominal</p>
+<p class="good">● Communication performance nominal</p>
+<p class="good">● Vehicle health nominal</p>
 
 </div>
 
 </section>
 
 
-<!-- TIMELINE -->
-
 <section id="timeline" class="view">
 
-<div class="kicker">MISSION SEQUENCE</div>
+<div class="kicker">
+MISSION SEQUENCE
+</div>
 
 <h1>MISSION TIMELINE</h1>
 
@@ -915,11 +1089,11 @@ Awaiting mission start...
 </section>
 
 
-<!-- HISTORY -->
-
 <section id="history" class="view">
 
-<div class="kicker">ARCHIVE</div>
+<div class="kicker">
+ARCHIVE
+</div>
 
 <h1>MISSION HISTORY</h1>
 
@@ -938,17 +1112,20 @@ MC-001 — MISSION ALPHA — READY
 </section>
 
 
-<!-- CREATE MISSION -->
-
 <div class="panel" style="margin-top:18px">
 
 <h3>CREATE NEW MISSION</h3>
 
 <div class="form">
 
-<input id="missionName" placeholder="Mission name">
+<input
+id="missionName"
+placeholder="Mission name">
 
-<input id="vehicleId" value="2060-X1" placeholder="Vehicle ID">
+<input
+id="vehicleId"
+value="2060-X1"
+placeholder="Vehicle ID">
 
 <select id="launchSite">
 
@@ -975,9 +1152,9 @@ CREATE
 <div class="log" id="log">
 
 [SYSTEM] 2060 Mission Operations Center initialized<br>
+[SYSTEM] Secure session ready<br>
 [SYSTEM] Vehicle 2060-X1 detected<br>
 [SYSTEM] All primary systems nominal<br>
-[SYSTEM] Mission control ready<br>
 
 </div>
 
@@ -985,10 +1162,12 @@ CREATE
 
 
 <footer>
-2060 AEROSPACE SYSTEMS • MISSION OPERATIONS PLATFORM V3.0
+2060 AEROSPACE SYSTEMS • MISSION OPERATIONS PLATFORM V4.0
 </footer>
 
 </main>
+
+</div>
 
 </div>
 
@@ -1004,6 +1183,59 @@ let velocity=0;
 let fuel=100;
 let progress=0;
 let seconds=0;
+
+
+function login(event){
+
+event.preventDefault();
+
+const username=
+document.getElementById("username").value.trim();
+
+const password=
+document.getElementById("password").value;
+
+if(username==="admin" && password==="2060"){
+
+localStorage.setItem("2060_logged_in","true");
+
+document.getElementById("loginScreen").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+document.getElementById("userDisplay").textContent=
+username.toUpperCase();
+
+}else{
+
+document.getElementById("loginError").textContent=
+"Invalid username or password";
+
+}
+
+}
+
+
+function logout(){
+
+localStorage.removeItem("2060_logged_in");
+
+location.reload();
+
+}
+
+
+function checkLogin(){
+
+if(localStorage.getItem("2060_logged_in")==="true"){
+
+document.getElementById("loginScreen").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+}
+
+}
 
 
 function showView(id,element){
@@ -1027,7 +1259,7 @@ function log(message){
 
 const box=document.getElementById("log");
 
-box.innerHTML +=
+box.innerHTML+=
 "["+
 new Date().toLocaleTimeString()+
 "] "+
@@ -1043,9 +1275,9 @@ function updateTime(){
 
 seconds++;
 
-let m=Math.floor(seconds/60);
+const m=Math.floor(seconds/60);
 
-let s=seconds%60;
+const s=seconds%60;
 
 document.getElementById("flightTime").textContent=
 String(m).padStart(2,"0")+
@@ -1061,9 +1293,11 @@ if(running)return;
 
 running=true;
 
-document.getElementById("mainStatus").textContent="COUNTDOWN";
+document.getElementById("mainStatus").textContent=
+"COUNTDOWN";
 
-document.getElementById("state").textContent="COUNTDOWN";
+document.getElementById("state").textContent=
+"COUNTDOWN";
 
 log("LAUNCH SEQUENCE INITIATED");
 
@@ -1083,9 +1317,11 @@ clearInterval(countdown);
 
 log("LIFTOFF");
 
-document.getElementById("mainStatus").textContent="IN FLIGHT";
+document.getElementById("mainStatus").textContent=
+"IN FLIGHT";
 
-document.getElementById("state").textContent="IN FLIGHT";
+document.getElementById("state").textContent=
+"IN FLIGHT";
 
 timer=setInterval(updateTelemetry,1000);
 
@@ -1138,6 +1374,7 @@ velocity.toFixed(0)+" km/h";
 document.getElementById("teleFuel").textContent=
 fuel.toFixed(0)+"%";
 
+
 document.getElementById("analyticsProgress").textContent=
 progress.toFixed(0)+"%";
 
@@ -1145,27 +1382,24 @@ document.getElementById("analyticsFuel").textContent=
 fuel.toFixed(0)+"%";
 
 
-const rocket=document.getElementById("rocket");
-
-rocket.style.left=
+document.getElementById("rocket").style.left=
 Math.min(90,70+progress*.18)+"%";
 
-rocket.style.top=
-Math.max(8,28-progress*.18)+"%";
+document.getElementById("rocket").style.top=
+Math.max(8,28-progress*.2)+"%";
 
 
-const orbitRocket=document.getElementById("orbitRocket");
-
-orbitRocket.style.left=
+document.getElementById("orbitRocket").style.left=
 Math.min(90,65+progress*.22)+"%";
 
-orbitRocket.style.top=
+document.getElementById("orbitRocket").style.top=
 Math.max(8,30-progress*.2)+"%";
 
 
-const telemetryLog=document.getElementById("telemetryLog");
+const telemetryLog=
+document.getElementById("telemetryLog");
 
-telemetryLog.innerHTML +=
+telemetryLog.innerHTML+=
 "ALT "+
 altitude.toFixed(0)+
 " km | VEL "+
@@ -1174,7 +1408,8 @@ velocity.toFixed(0)+
 fuel.toFixed(0)+
 "%<br>";
 
-telemetryLog.scrollTop=telemetryLog.scrollHeight;
+telemetryLog.scrollTop=
+telemetryLog.scrollHeight;
 
 
 if(progress>35){
@@ -1191,7 +1426,6 @@ document.getElementById("timeOrbit").className=
 if(progress>=100){
 
 clearInterval(timer);
-
 clearInterval(clock);
 
 running=false;
@@ -1212,7 +1446,6 @@ log("MISSION COMPLETE");
 function abortMission(){
 
 clearInterval(timer);
-
 clearInterval(clock);
 
 running=false;
@@ -1237,104 +1470,23 @@ log("⚠ ABORT COMMAND EXECUTED");
 function resetMission(){
 
 clearInterval(timer);
-
 clearInterval(clock);
 
 running=false;
 
 altitude=0;
-
 velocity=0;
-
 fuel=100;
-
 progress=0;
-
 seconds=0;
 
-
 document.getElementById("altitude").textContent="0 km";
-
 document.getElementById("velocity").textContent="0 km/h";
-
 document.getElementById("fuel").textContent="100%";
-
 document.getElementById("state").textContent="READY";
-
 document.getElementById("mainStatus").textContent="READY";
 
-document.getElementById("mainStatus").style.color=
-"#49f3a4";
+document.getElementById("mainStatus").style.color="#49f3a4";
+document.getElementById("state").style.color="#49f3a4";
 
-document.getElementById("state").style.color=
-"#49f3a4";
-
-document.getElementById("progressText").textContent="0%";
-
-document.getElementById("progressBar").style.width="0%";
-
-document.getElementById("analyticsProgress").textContent="0%";
-
-document.getElementById("analyticsFuel").textContent="100%";
-
-document.getElementById("flightTime").textContent="00:00";
-
-document.getElementById("rocket").style.left="70%";
-
-document.getElementById("rocket").style.top="25%";
-
-log("MISSION RESET");
-
-}
-
-
-function createMission(){
-
-const name=
-document.getElementById("missionName").value ||
-"MISSION ALPHA";
-
-const vehicle=
-document.getElementById("vehicleId").value ||
-"2060-X1";
-
-const site=
-document.getElementById("launchSite").value;
-
-
-const item=document.createElement("div");
-
-item.className="history-item";
-
-item.textContent=
-"NEW — "+
-name+
-" — "+
-vehicle+
-" — "+
-site+
-" — READY";
-
-
-document.getElementById("historyList")
-.prepend(item);
-
-
-log(
-"NEW MISSION CREATED: "+
-name+
-" / "+
-vehicle+
-" / "+
-site
-);
-
-
-document.getElementById("missionName").value="";
-
-}
-
-</script>
-
-</body>
-  </html>
+document.getElementBy
