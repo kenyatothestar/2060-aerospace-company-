@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2060 Aerospace — Mission Operations Center</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05080d;color:#e8eef7;font-family:Arial,sans-serif}
+button{cursor:pointer}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#05080d}
+.login-box{width:min(400px,90%);background:#0a111a;border:1px solid #243241;border-radius:10px;padding:35px}
+.login-box h1{margin:0;font-size:30px;letter-spacing:3px}
+.login-box p{color:#8190a2}
+.login-box input{width:100%;padding:13px;margin:8px 0;background:#05080d;border:1px solid #293746;color:white;border-radius:5px}
+.login-box button{width:100%;padding:13px;margin-top:12px;background:#183622;color:#9af2b5;border:1px solid #356b47;border-radius:5px;font-weight:bold}
+#error{color:#e57373;font-size:13px}
+#app{display:none;min-height:100vh;grid-template-columns:220px 1fr}
+.sidebar{background:#080d14;border-right:1px solid #1d2935;padding:22px 14px}
+.logo{font-size:25px;font-weight:bold;letter-spacing:3px;margin-bottom:35px}
+.logo small{display:block;font-size:10px;color:#738092;letter-spacing:1px;margin-top:5px}
+.nav button{display:block;width:100%;padding:13px;margin:5px 0;text-align:left;background:transparent;color:#8996a6;border:0;border-radius:5px}
+.nav button:hover,.nav button.active{background:#111b26;color:white}
+.main{min-width:0}
+.top{height:65px;border-bottom:1px solid #1d2935;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+.online{color:#72d99a;font-size:12px}
+.content{padding:22px}
+.hero{background:#0a111a;border:1px solid #1d2935;border-radius:8px;padding:22px;margin-bottom:18px}
+.hero h1{margin:0 0 6px}
+.hero p{margin:0;color:#8290a1}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card,.panel{background:#080d14;border:1px solid #1d2935;border-radius:8px;padding:18px}
+.label{font-size:10px;color:#718096;letter-spacing:1px;margin-bottom:9px}
+.value{font-size:24px;font-weight:bold}
+.panels{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:14px}
+.panel{min-height:230px}
+.panel h3{font-size:14px;margin-top:0}
+.control{padding:11px 18px;margin:4px;background:#162b20;color:#9af2b5;border:1px solid #356b47;border-radius:5px}
+.logout{background:#201418!important;color:#f19a9a!important;border:1px solid #63383b!important}
+.page{display:none}.page.active{display:block}
+@media(max-width:850px){#app{grid-template-columns:1fr}.sidebar{display:none}.cards{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="login">
+<div class="login-box">
+<h1>2060</h1>
+<p>MISSION OPERATIONS CENTER</p>
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">ENTER MISSION CONTROL</button>
+<p id="error"></p>
+<small>Demo access: admin / 2060</small>
+</div>
+</div>
+
+<div id="app">
+<aside class="sidebar">
+<div class="logo">2060<small>MISSION CONTROL</small></div>
+<div class="nav">
+<button class="active" onclick="page('mission',this)">MISSION</button>
+<button onclick="page('flight',this)">FLIGHT DIRECTOR</button>
+<button onclick="page('telemetry',this)">TELEMETRY</button>
+<button onclick="page('orbit',this)">ORBIT</button>
+<button onclick="page('systems',this)">SYSTEMS</button>
+<button onclick="page('communications',this)">COMMUNICATIONS</button>
+<button onclick="page('analytics',this)">ANALYTICS</button>
+<button onclick="page('operations',this)">OPERATIONS</button>
+<button onclick="page('alerts',this)">ALERTS & DIAGNOSTICS</button>
+<button onclick="page('history',this)">MISSION HISTORY</button>
+<button class="logout" onclick="logout()">LOG OUT</button>
+</div>
+</aside>
+
+<main class="main">
+<header class="top">
+<div><strong>2060 AEROSPACE</strong><br><small style="color:#718096">MISSION OPERATIONS CENTER</small></div>
+<span class="online">● SYSTEM ONLINE &nbsp; | &nbsp; MISSION ALPHA</span>
+</header>
+
+<section class="content">
+
+<div id="mission" class="page active">
+<div class="hero"><h1>MISSION ALPHA</h1><p>2060 Aerospace Systems — Mission Operations Interface</p></div>
+<div class="cards">
+<div class="card"><div class="label">MISSION STATUS</div><div id="status" class="value">STANDBY</div></div>
+<div class="card"><div class="label">ALTITUDE</div><div id="alt" class="value">0 km</div></div>
+<div class="card"><div class="label">VELOCITY</div><div id="vel" class="value">0 km/s</div></div>
+<div class="card"><div class="label">FUEL</div><div id="fuel" class="value">100%</div></div>
+</div>
+<div class="panels">
+<div class="panel"><h3>MISSION OVERVIEW</h3><p>MISSION INITIALIZATION</p><p>VEHICLE SYSTEM CHECK</p><p>TELEMETRY LINK</p><p>FLIGHT OPERATIONS</p><p>MISSION COMPLETION</p></div>
+<div class="panel"><h3>SYSTEM STATUS</h3><p>POWER — NOMINAL</p><p>PROPULSION — STANDBY</p><p>GUIDANCE — NOMINAL</p><p>COMMUNICATIONS — NOMINAL</p><p>TELEMETRY — SIMULATED</p></div>
+</div>
+</div>
+
+<div id="flight" class="page"><div class="hero"><h1>FLIGHT DIRECTOR</h1><p>Mission command center</p></div><div class="panel"><h3>FLIGHT OPERATIONS</h3><button class="control" onclick="launch()">🚀 LAUNCH</button><button class="control" onclick="abort()">ABORT</button><button class="control" onclick="reset()">RESET</button></div></div>
+
+<div id="telemetry" class="page"><div class="hero"><h1>TELEMETRY</h1><p>Vehicle telemetry monitoring</p></div><div class="cards"><div class="card"><div class="label">ALTITUDE</div><div class="value" id="alt2">0 km</div></div><div class="card"><div class="label">VELOCITY</div><div class="value" id="vel2">0 km/s</div></div><div class="card"><div class="label">FUEL</div><div class="value" id="fuel2">100%</div></div><div class="card"><div class="label">LINK</div><div class="value">SIMULATED</div></div></div></div>
+
+<div id="orbit" class="page"><div class="hero"><h1>ORBIT</h1><p>Trajectory and orbital operations</p></div><div class="panel"><h3>TRAJECTORY</h3><p>Orbital visualization module ready.</p></div></div>
+
+<div id="systems" class="page"><div class="hero"><h1>SYSTEMS</h1><p>Vehicle and ground-system health</p></div><div class="panel"><h3>SYSTEM HEALTH</h3><p>POWER — NOMINAL</p><p>GUIDANCE — NOMINAL</p><p>PROPULSION — STANDBY</p></div></div>
+
+<div id="communications" class="page"><div class="hero"><h1>COMMUNICATIONS</h1><p>Mission communication center</p></div><div class="panel"><h3>COMMUNICATION LINK</h3><p>MISSION CHANNEL — READY</p><p>GROUND LINK — SIMULATED</p></div></div>
+
+<div id="analytics" class="page"><div class="hero"><h1>ANALYTICS</h1><p>Mission performance analytics</p></div><div class="panel"><h3>MISSION ANALYTICS</h3><p>Telemetry analytics module ready.</p><p>Performance monitoring module ready.</p></div></div>
+
+
+<div id="operations" class="page">
+<div class="hero"><h1>OPERATIONS</h1><p>Integrated mission operations environment</p></div>
+<div class="cards">
+<div class="card"><div class="label">MISSION PHASE</div><div class="value">PRE-LAUNCH</div></div>
+<div class="card"><div class="label">VEHICLE</div><div class="value">ALPHA-01</div></div>
+<div class="card"><div class="label">GROUND LINK</div><div class="value">NOMINAL</div></div>
+<div class="card"><div class="label">MISSION CLOCK</div><div id="clock" class="value">00:00:00</div></div>
+</div>
+<div class="panels">
+<div class="panel"><h3>MISSION TIMELINE</h3>
+<p>✓ MISSION INITIALIZATION</p>
+<p>✓ VEHICLE SYSTEM CHECK</p>
+<p>● TELEMETRY LINK</p>
+<p>○ FLIGHT OPERATIONS</p>
+<p>○ MISSION COMPLETION</p>
+</div>
+<div class="panel"><h3>ACTIVE ALERTS</h3>
+<p>NO CRITICAL ALERTS</p>
+<p>ALL PRIMARY SYSTEMS NOMINAL</p>
+</div>
+</div>
+</div>
+
+<div id="history" class="page">
+<div class="hero"><h1>MISSION HISTORY</h1><p>Mission records and previous operations</p></div>
+<div class="panel"><h3>MISSION RECORDS</h3>
+<p>MISSION ALPHA — ACTIVE SESSION</p>
+<p>STATUS — READY</p>
+<p>TELEMETRY — SIMULATED</p>
+<p>HISTORY DATABASE — READY</p>
+</div>
+</div>
+
+<div id="alerts" class="page">
+<div class="hero"><h1>ALERTS & DIAGNOSTICS</h1><p>System warnings and operational diagnostics</p></div>
+<div class="panel"><h3>SYSTEM DIAGNOSTICS</h3>
+<p>POWER — NOMINAL</p>
+<p>PROPULSION — STANDBY</p>
+<p>GUIDANCE — NOMINAL</p>
+<p>COMMUNICATIONS — NOMINAL</p>
+<p>TELEMETRY — SIMULATED</p>
+<p>FAULT MONITOR — READY</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+
+<script>
+let running=false,timer=null,a=0,v=0,f=100;
+
+function login(){
+ const username=document.getElementById("user").value.trim();
+ const password=document.getElementById("pass").value.trim();
+
+ if(username==="admin" && password==="2060"){
+  document.getElementById("login").style.display="none";
+  document.getElementById("app").style.display="grid";
+  document.getElementById("error").textContent="";
+ }else{
+  document.getElementById("error").textContent="Use demo access: admin / 2060";
+ }
+}
+
+function logout(){
+ document.getElementById("app").style.display="none";
+ document.getElementById("login").style.display="flex";
+}
+
+function page(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+}
+
+function update(){
+ if(!running)return;
+ a+=25;v+=.08;f=Math.max(0,f-.4);
+ document.getElementById("status").textContent=a>=100?"ASCENT":"LAUNCH";
+ document.getElementById("alt").textContent=a+" km";
+ document.getElementById("vel").textContent=v.toFixed(2)+" km/s";
+ document.getElementById("fuel").textContent=f.toFixed(1)+"%";
+ document.getElementById("alt2").textContent=a+" km";
+ document.getElementById("vel2").textContent=v.toFixed(2)+" km/s";
+ document.getElementById("fuel2").textContent=f.toFixed(1)+"%";
+}
+
+function launch(){running=true;clearInterval(timer);timer=setInterval(update,1000);update()}
+function abort(){running=false;clearInterval(timer);document.getElementById("status").textContent="ABORTED"}
+function reset(){running=false;clearInterval(timer);a=0;v=0;f=100;update();document.getElementById("status").textContent="STANDBY";document.getElementById("alt").textContent="0 km";document.getElementById("vel").textContent="0 km/s";document.getElementById("fuel").textContent="100%";document.getElementById("alt2").textContent="0 km";document.getElementById("vel2").textContent="0 km/s";document.getElementById("fuel2").textContent="100%"}
+
+setInterval(function(){
+ const now=new Date();
+ const t=[now.getHours(),now.getMinutes(),now.getSeconds()]
+   .map(x=>String(x).padStart(2,"0")).join(":");
+ const c=document.getElementById("clock");
+ if(c)c.textContent=t;
+},1000);
+</script>
+</body>
+</html>
