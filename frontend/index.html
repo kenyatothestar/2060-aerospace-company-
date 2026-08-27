@@ -293,36 +293,72 @@ body {
 </div>
 
 <script>
-async function connectMissionAPI() {
-  const status = document.getElementById("apiStatus");
+let missionRunning = false;
+let altitudeValue = 0;
+let velocityValue = 0;
+let fuelValue = 100;
+let telemetryTimer = null;
 
-  try {
-    const response = await fetch("http://localhost:4000/");
+function updateTelemetry() {
+  if (!missionRunning) return;
 
-    if (!response.ok) {
-      throw new Error("API response " + response.status);
-    }
+  altitudeValue += 25;
+  velocityValue += 0.08;
+  fuelValue = Math.max(0, fuelValue - 0.4);
 
-    const text = await response.text();
+  document.getElementById("altitude").textContent =
+    altitudeValue.toFixed(0) + " km";
 
-    status.textContent = "● MISSION API ONLINE";
-    status.className = "status api-ok";
-    document.getElementById("telemetryStatus").textContent = "ONLINE";
+  document.getElementById("velocity").textContent =
+    velocityValue.toFixed(2) + " km/s";
 
-    if (text) {
-      console.log("Mission API:", text);
-    }
+  document.getElementById("fuel").textContent =
+    fuelValue.toFixed(1) + "%";
 
-  } catch (error) {
-    status.textContent = "● API CONNECTION FAILED";
-    status.className = "status api-error";
-    document.getElementById("telemetryStatus").textContent = "OFFLINE";
-    console.log("Mission API:", error.message);
+  document.getElementById("missionStatus").textContent =
+    altitudeValue >= 100 ? "ASCENT" : "LAUNCH";
+
+  document.getElementById("telemetryStatus").textContent =
+    "SIMULATED";
+
+  if (fuelValue <= 0) {
+    abortMission();
   }
 }
 
-connectMissionAPI();
-setInterval(connectMissionAPI, 5000);
+function launchMission() {
+  if (missionRunning) return;
+
+  missionRunning = true;
+  document.getElementById("missionStatus").textContent = "LAUNCH";
+  document.getElementById("telemetryStatus").textContent = "SIMULATED";
+
+  clearInterval(telemetryTimer);
+  telemetryTimer = setInterval(updateTelemetry, 1000);
+}
+
+function abortMission() {
+  missionRunning = false;
+  clearInterval(telemetryTimer);
+  document.getElementById("missionStatus").textContent = "ABORTED";
+}
+
+function resetMission() {
+  missionRunning = false;
+  clearInterval(telemetryTimer);
+
+  altitudeValue = 0;
+  velocityValue = 0;
+  fuelValue = 100;
+
+  document.getElementById("missionStatus").textContent = "STANDBY";
+  document.getElementById("altitude").textContent = "0 km";
+  document.getElementById("velocity").textContent = "0 km/s";
+  document.getElementById("fuel").textContent = "100%";
+  document.getElementById("telemetryStatus").textContent = "SIMULATED";
+}
+
+resetMission();
 </script>
 
 </body>
