@@ -477,6 +477,218 @@ document.getElementById("mission").textContent="MC-001";
 updateDisplay();
 
 </script>
+<!-- V19.1 ADVANCED MISSION CONTROL -->
+<style>
+.advanced-grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:14px;
+margin-top:20px
+}
+.telemetry-live{
+height:180px;
+background:#050b11;
+border:1px solid #203443;
+border-radius:8px;
+padding:12px;
+overflow:hidden;
+position:relative
+}
+.telemetry-line{
+height:2px;
+background:#49b7ff;
+position:absolute;
+left:0;
+bottom:35%;
+width:100%;
+box-shadow:0 0 10px #49b7ff;
+animation:telemetry 3s linear infinite
+}
+@keyframes telemetry{
+0%{transform:translateX(-100%)}
+100%{transform:translateX(100%)}
+}
+.metric-row{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #1d2b36
+}
+.alert{
+padding:10px;
+margin-bottom:8px;
+border-left:3px solid #55e88a;
+background:#08140f;
+font-size:13px
+}
+.command{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:8px
+}
+.command button{width:100%}
+.trajectory{
+height:220px;
+position:relative;
+background:
+radial-gradient(circle at center,#132838 0 2px,transparent 3px),
+linear-gradient(90deg,transparent 49.8%,#263b4a 50%,transparent 50.2%),
+linear-gradient(0deg,transparent 49.8%,#263b4a 50%,transparent 50.2%);
+border:1px solid #203443;
+border-radius:8px;
+overflow:hidden
+}
+.orbit{
+position:absolute;
+width:260px;
+height:110px;
+border:1px solid #49b7ff;
+border-radius:50%;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%) rotate(-12deg)
+}
+.vehicle-dot{
+position:absolute;
+width:10px;
+height:10px;
+border-radius:50%;
+background:#55e88a;
+box-shadow:0 0 12px #55e88a;
+left:72%;
+top:32%;
+animation:orbitMove 5s linear infinite
+}
+@keyframes orbitMove{
+0%{left:72%;top:32%}
+25%{left:55%;top:24%}
+50%{left:28%;top:52%}
+75%{left:48%;top:72%}
+100%{left:72%;top:32%}
+}
+@media(max-width:900px){
+.advanced-grid{grid-template-columns:1fr}
+}
+</style>
 
+<div class="advanced-grid">
+
+<div class="section">
+<h2>LIVE FLIGHT TELEMETRY</h2>
+
+<div class="telemetry-live">
+<div class="telemetry-line"></div>
+</div>
+
+<div class="metric-row">
+<span>Altitude</span>
+<strong id="advAltitude">0 km</strong>
+</div>
+
+<div class="metric-row">
+<span>Velocity</span>
+<strong id="advVelocity">0 km/h</strong>
+</div>
+
+<div class="metric-row">
+<span>Fuel</span>
+<strong id="advFuel">100%</strong>
+</div>
+
+<div class="metric-row">
+<span>Vehicle Health</span>
+<strong id="advHealth">100%</strong>
+</div>
+</div>
+
+<div class="section">
+<h2>MISSION ALERTS</h2>
+
+<div class="alert">● All primary systems nominal</div>
+<div class="alert">● Navigation system online</div>
+<div class="alert">● Communications link established</div>
+<div class="alert">● Telemetry stream active</div>
+
+</div>
+
+</div>
+
+<div class="advanced-grid">
+
+<div class="section">
+<h2>ORBIT & TRAJECTORY</h2>
+
+<div class="trajectory">
+<div class="orbit"></div>
+<div class="vehicle-dot"></div>
+</div>
+
+<p style="margin-top:12px;color:#8196a7">
+TRAJECTORY STATUS: <span class="good">NOMINAL</span>
+</p>
+</div>
+
+<div class="section">
+<h2>FLIGHT DIRECTOR</h2>
+
+<div class="command">
+<button onclick="launch()">LAUNCH</button>
+<button onclick="abortMission()">ABORT</button>
+<button onclick="resetMission()">RESET</button>
+<button onclick="createMission()">MISSION</button>
+</div>
+
+<div style="margin-top:18px">
+<div class="metric-row">
+<span>Engine</span>
+<strong class="good">NOMINAL</strong>
+</div>
+<div class="metric-row">
+<span>Guidance</span>
+<strong class="good">LOCKED</strong>
+</div>
+<div class="metric-row">
+<span>Ground Link</span>
+<strong class="good">ONLINE</strong>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+<h2>GROUND COMMUNICATIONS</h2>
+
+<div class="alert">
+<strong>GROUND CONTROL</strong><br>
+Telemetry link established with Mission Operations Center.
+</div>
+
+<div class="alert">
+<strong>FLIGHT DIRECTOR</strong><br>
+Vehicle systems reporting nominal conditions.
+</div>
+
+<div class="alert">
+<strong>2060-X1</strong><br>
+Awaiting next mission command.
+</div>
+</div>
+
+<script>
+setInterval(function(){
+
+if(typeof altitude!=="undefined"){
+
+document.getElementById("advAltitude").textContent=altitude+" km";
+document.getElementById("advVelocity").textContent=speed+" km/h";
+document.getElementById("advFuel").textContent=fuel+"%";
+document.getElementById("advHealth").textContent=health+"%";
+
+}
+
+},500);
+</script>
 </body>
   </html>
