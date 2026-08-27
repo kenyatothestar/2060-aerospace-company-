@@ -1,453 +1,943 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2060 Mission Control V2</title>
 
-  <title>2060 Mission Control</title>
+<style>
+*{box-sizing:border-box}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#020711;
+color:#eaf7ff;
+}
 
-    body {
-      margin: 0;
-      background: #050912;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
+header{
+height:65px;
+background:#050c15;
+border-bottom:1px solid #17334d;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+}
 
-    header {
-      background: #0b1424;
-      border-bottom: 1px solid #263750;
-      padding: 18px;
-      text-align: center;
-    }
+.logo{
+font-weight:bold;
+letter-spacing:2px;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+.logo span{
+color:#42d9ff;
+}
 
-    header p {
-      margin: 6px 0 0;
-      color: #8da2bd;
-      font-size: 13px;
-    }
+.online{
+color:#49f3a4;
+}
 
-    main {
-      padding: 16px;
-      max-width: 1200px;
-      margin: auto;
-    }
+.layout{
+display:grid;
+grid-template-columns:210px 1fr;
+min-height:calc(100vh - 65px);
+}
 
-    .status {
-      background: #07101d;
-      border: 1px solid #263750;
-      border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
+aside{
+background:#040a11;
+border-right:1px solid #17334d;
+padding:15px 10px;
+}
 
-    .status-title {
-      color: #38bdf8;
-      font-size: 13px;
-    }
+.menu-title{
+font-size:10px;
+letter-spacing:2px;
+color:#61798d;
+margin:15px 8px 8px;
+}
 
-    .status-value {
-      color: #00ff99;
-      font-size: 25px;
-      font-weight: bold;
-      margin-top: 8px;
-    }
+.menu{
+padding:11px 9px;
+margin:3px 0;
+border-radius:5px;
+color:#9bb0c1;
+cursor:pointer;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
+.menu:hover,
+.menu.active{
+background:#092033;
+color:#42d9ff;
+border-left:2px solid #42d9ff;
+}
 
-    .card {
-      background: #07101d;
-      border: 1px solid #263750;
-      border-radius: 12px;
-      padding: 18px;
-    }
+main{
+padding:18px;
+max-width:1500px;
+width:100%;
+margin:auto;
+}
 
-    .card h2 {
-      margin-top: 0;
-      color: #38bdf8;
-      font-size: 15px;
-    }
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px;
+margin-bottom:15px;
+}
 
-    .value {
-      font-size: 25px;
-      font-weight: bold;
-      margin-top: 15px;
-    }
+.kicker{
+font-size:10px;
+letter-spacing:2px;
+color:#42d9ff;
+}
 
-    .label {
-      color: #8da2bd;
-      font-size: 12px;
-    }
+.mission{
+font-size:23px;
+font-weight:bold;
+margin-top:5px;
+}
 
-    .online {
-      color: #00ff99;
-    }
+.buttons{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
 
-    .nominal {
-      color: #00ff99;
-    }
+button{
+padding:10px 14px;
+border-radius:5px;
+border:1px solid #42d9ff;
+background:#062033;
+color:#42d9ff;
+font-weight:bold;
+cursor:pointer;
+}
 
-    .mission {
-      margin-top: 16px;
-    }
+button:hover{
+background:#0b3048;
+}
 
-    .mission-line {
-      height: 8px;
-      background: #172338;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 12px;
-    }
+.abort{
+border-color:#ff5872;
+color:#ff5872;
+background:#210b12;
+}
 
-    .mission-progress {
-      width: 0%;
-      height: 100%;
-      background: #38bdf8;
-    }
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
 
-    footer {
-      text-align: center;
-      padding: 25px;
-      color: #64748b;
-      font-size: 12px;
-    }
+.card{
+background:#071321;
+border:1px solid #17334d;
+border-radius:8px;
+padding:15px;
+}
 
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+.card small{
+color:#7f96a9;
+font-size:10px;
+letter-spacing:1px;
+}
 
-    @media (max-width: 500px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.value{
+font-size:25px;
+font-weight:bold;
+margin-top:8px;
+color:#42d9ff;
+}
+
+.green{
+color:#49f3a4;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1.3fr .7fr;
+gap:14px;
+margin-top:14px;
+}
+
+.panel{
+background:#071321;
+border:1px solid #17334d;
+border-radius:8px;
+padding:15px;
+}
+
+.panel h3{
+font-size:11px;
+letter-spacing:2px;
+color:#9bb0c1;
+margin-top:0;
+}
+
+.orbit{
+height:300px;
+position:relative;
+overflow:hidden;
+background:
+radial-gradient(circle,#12415f 0,#061624 25%,#020711 70%);
+}
+
+.orbit:before,
+.orbit:after{
+content:"";
+position:absolute;
+border:1px solid #42d9ff55;
+border-radius:50%;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%) rotate(-18deg);
+}
+
+.orbit:before{
+width:78%;
+height:44%;
+}
+
+.orbit:after{
+width:55%;
+height:27%;
+}
+
+.earth{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+font-size:60px;
+}
+
+.rocket{
+position:absolute;
+left:70%;
+top:25%;
+font-size:25px;
+transition:all 1s linear;
+}
+
+.status{
+font-size:25px;
+font-weight:bold;
+color:#49f3a4;
+margin:15px 0;
+}
+
+.system{
+display:flex;
+justify-content:space-between;
+padding:9px 0;
+border-bottom:1px solid #13283a;
+color:#a6bacb;
+}
+
+.timeline{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:6px;
+}
+
+.step{
+border-top:3px solid #274155;
+padding-top:10px;
+color:#72899b;
+font-size:11px;
+}
+
+.step.done{
+border-color:#49f3a4;
+color:#49f3a4;
+}
+
+.step.current{
+border-color:#42d9ff;
+color:#42d9ff;
+}
+
+.log{
+height:145px;
+overflow:auto;
+background:#02070d;
+padding:10px;
+font-family:monospace;
+font-size:12px;
+line-height:1.8;
+color:#8ea7b9;
+}
+
+.form{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+}
+
+input,select{
+width:100%;
+padding:12px;
+background:#030a12;
+border:1px solid #17334d;
+border-radius:5px;
+color:white;
+}
+
+.form button{
+margin-top:5px;
+}
+
+.progress{
+height:8px;
+background:#122536;
+border-radius:10px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.progress-bar{
+height:100%;
+width:0%;
+background:#42d9ff;
+transition:width .5s;
+}
+
+.history{
+margin-top:14px;
+}
+
+.history-item{
+padding:10px;
+border-bottom:1px solid #17334d;
+color:#9eb3c4;
+}
+
+footer{
+text-align:center;
+padding:25px;
+color:#60788b;
+border-top:1px solid #17334d;
+margin-top:25px;
+font-size:11px;
+}
+
+@media(max-width:900px){
+
+.layout{
+grid-template-columns:1fr;
+}
+
+aside{
+display:none;
+}
+
+.cards{
+grid-template-columns:1fr 1fr;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.form{
+grid-template-columns:1fr;
+}
+
+.timeline{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media(max-width:500px){
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.top{
+display:block;
+}
+
+.buttons{
+margin-top:12px;
+}
+
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>🚀 2060 MISSION CONTROL</h1>
-  <p>Mission Operations Platform V1.0</p>
+
+<div class="logo">
+🚀 2060 <span>MISSION CONTROL</span>
+</div>
+
+<div class="online">
+● SYSTEM ONLINE
+</div>
+
 </header>
+
+<div class="layout">
+
+<aside>
+
+<div class="menu-title">OPERATIONS</div>
+
+<div class="menu active">▣ Flight Director</div>
+<div class="menu">◈ Telemetry</div>
+<div class="menu">◎ Orbit</div>
+<div class="menu">▤ Systems</div>
+<div class="menu">◌ Communications</div>
+<div class="menu">▥ Analytics</div>
+
+<div class="menu-title">MISSION</div>
+
+<div class="menu">▸ Timeline</div>
+<div class="menu">▣ Mission History</div>
+
+</aside>
 
 <main>
 
-  <section class="status">
-    <div class="status-title">
-      SYSTEM STATUS
-    </div>
+<div class="top">
 
-    <div class="status-value">
-      <span class="online">●</span> ONLINE
-    </div>
-  </section>
+<div>
 
+<div class="kicker">
+MISSION OPERATIONS CENTER
+</div>
 
-  <section class="grid">
+<div class="mission">
+MISSION ALPHA — 2060-X1
+</div>
 
-    <div class="card">
-      <h2>MISSION</h2>
+</div>
 
-      <div class="label">
-        Current Mission
-      </div>
+<div class="buttons">
 
-      <div class="value">
-        MC-001
-      </div>
-    </div>
+<button onclick="launch()">
+🚀 LAUNCH
+</button>
 
+<button class="abort" onclick="abortMission()">
+ABORT
+</button>
 
-    <div class="card">
-      <h2>VEHICLE</h2>
+<button onclick="resetMission()">
+RESET
+</button>
 
-      <div class="label">
-        Vehicle ID
-      </div>
+</div>
 
-      <div class="value">
-        2060-X1
-      </div>
-    </div>
+</div>
 
 
-    <div class="card">
-      <h2>MISSION STATUS</h2>
+<!-- TELEMETRY -->
 
-      <div class="label">
-        Current State
-      </div>
+<div class="cards">
 
-      <div class="value nominal">
-        READY
-      </div>
-    </div>
+<div class="card">
 
+<small>ALTITUDE</small>
 
-    <div class="card">
-      <h2>ALTITUDE</h2>
+<div class="value" id="altitude">
+0 km
+</div>
 
-      <div class="label">
-        Current altitude
-      </div>
+</div>
 
-      <div class="value">
-        0 km
-      </div>
-    </div>
+<div class="card">
 
+<small>VELOCITY</small>
 
-    <div class="card">
-      <h2>SPEED</h2>
+<div class="value" id="velocity">
+0 km/h
+</div>
 
-      <div class="label">
-        Current velocity
-      </div>
+</div>
 
-      <div class="value">
-        0 km/h
-      </div>
-    </div>
+<div class="card">
 
+<small>FUEL</small>
 
-    <div class="card">
-      <h2>FUEL</h2>
+<div class="value green" id="fuel">
+100%
+</div>
 
-      <div class="label">
-        Propellant remaining
-      </div>
+</div>
 
-      <div class="value">
-        100%
-      </div>
-    </div>
+<div class="card">
 
-  </section>
+<small>TEMPERATURE</small>
+
+<div class="value green">
+24.8 °C
+</div>
+
+</div>
+
+</div>
 
 
-  <section class="card mission">
+<div class="grid">
 
-    <h2>
-      MISSION PROGRESS
-    </h2>
 
-    <div class="label">
-      Mission readiness
-    </div>
+<!-- ORBIT -->
 
-    <div class="mission-line">
-      <div class="mission-progress"></div>
-    </div>
+<div class="panel">
 
-  </section>
-<section class="card mission">
+<h3>ORBIT & TRAJECTORY</h3>
 
-  <h2>CREATE MISSION</h2>
+<div class="orbit">
 
-  <form id="missionForm">
+<div class="earth">
+🌍
+</div>
 
-    <label for="missionName" class="label">
-      Mission Name
-    </label>
+<div class="rocket" id="rocket">
+🚀
+</div>
 
-    <input
-      id="missionName"
-      type="text"
-      placeholder="Enter mission name"
-      required
-      style="
-        width:100%;
-        padding:12px;
-        margin:8px 0 14px;
-        border-radius:8px;
-        border:1px solid #263750;
-        background:#0b1424;
-        color:white;
-      "
-    >
+</div>
 
-    <label for="vehicleId" class="label">
-      Vehicle ID
-    </label>
+</div>
 
-    <input
-      id="vehicleId"
-      type="text"
-      placeholder="2060-X1"
-      required
-      style="
-        width:100%;
-        padding:12px;
-        margin:8px 0 14px;
-        border-radius:8px;
-        border:1px solid #263750;
-        background:#0b1424;
-        color:white;
-      "
-    >
 
-    <label for="launchSite" class="label">
-      Launch Site
-    </label>
+<!-- STATUS -->
 
-    <input
-      id="launchSite"
-      type="text"
-      placeholder="KENYA"
-      required
-      style="
-        width:100%;
-        padding:12px;
-        margin:8px 0 18px;
-        border-radius:8px;
-        border:1px solid #263750;
-        background:#0b1424;
-        color:white;
-      "
-    >
+<div class="panel">
 
-    <button
-      type="submit"
-      style="
-        width:100%;
-        padding:13px;
-        border:0;
-        border-radius:8px;
-        background:#38bdf8;
-        color:#03101c;
-        font-weight:bold;
-      "
-    >
-      CREATE MISSION
-    </button>
+<h3>SYSTEM STATUS</h3>
 
-  </form>
+<div class="status" id="missionStatus">
+READY
+</div>
 
-  <p
-    id="missionMessage"
-    class="label"
-    style="margin-top:15px;"
-  ></p>
+<div class="system">
+PROPULSION
+<span class="online">NOMINAL</span>
+</div>
 
-</section>
-</main>
+<div class="system">
+GUIDANCE
+<span class="online">NOMINAL</span>
+</div>
 
+<div class="system">
+POWER
+<span class="online">98%</span>
+</div>
+
+<div class="system">
+COMMUNICATIONS
+<span class="online">LINKED</span>
+</div>
+
+<div class="system">
+NAVIGATION
+<span class="online">NOMINAL</span>
+</div>
+
+</div>
+
+
+<!-- TIMELINE -->
+
+<div class="panel">
+
+<h3>MISSION TIMELINE</h3>
+
+<div class="timeline">
+
+<div class="step done">
+PRECHECK
+</div>
+
+<div class="step current" id="launchStep">
+LAUNCH
+</div>
+
+<div class="step" id="orbitStep">
+ORBIT INSERTION
+</div>
+
+<div class="step">
+MISSION OPS
+</div>
+
+<div class="step">
+RETURN
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PROGRESS -->
+
+<div class="panel">
+
+<h3>MISSION PROGRESS</h3>
+
+<div id="progressText">
+0%
+</div>
+
+<div class="progress">
+
+<div class="progress-bar" id="progressBar">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CREATE MISSION -->
+
+<div class="panel" style="margin-top:14px">
+
+<h3>CREATE MISSION</h3>
+
+<div class="form">
+
+<input
+id="missionName"
+placeholder="Mission name"
+/>
+
+<input
+id="vehicleId"
+value="2060-X1"
+placeholder="Vehicle ID"
+/>
+
+<select id="launchSite">
+
+<option>KENYA</option>
+<option>NAIROBI</option>
+<option>MOON BASE</option>
+<option>LOW EARTH ORBIT</option>
+
+</select>
+
+<button onclick="createMission()">
+CREATE MISSION
+</button>
+
+</div>
+
+</div>
+
+
+<!-- LOG -->
+
+<div class="panel" style="margin-top:14px">
+
+<h3>OPERATIONS LOG</h3>
+
+<div class="log" id="log">
+
+[SYSTEM] 2060 Mission Control initialized<br>
+
+[SYSTEM] Telemetry connection nominal<br>
+
+[SYSTEM] Guidance system nominal<br>
+
+[SYSTEM] Communications link established<br>
+
+[SYSTEM] Mission ALPHA ready<br>
+
+</div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<div class="panel history">
+
+<h3>MISSION HISTORY</h3>
+
+<div id="history">
+
+<div class="history-item">
+MC-001 — Mission Alpha — READY
+</div>
+
+</div>
+
+</div>
 
 <footer>
-  2060 Aerospace Systems • Mission Operations Platform
+
+2060 AEROSPACE SYSTEMS • MISSION OPERATIONS PLATFORM V2.0
+
 </footer>
-<script src="api.js"></script><script>
-  const API_URL = "";
-async function loadMissionData() {
 
-  if (!API_URL) {
-    return;
-  }
+</main>
 
-  try {
+</div>
 
-    const response =
-      await fetch(
-        API_URL + "/api/mission"
-      );
 
-    if (!response.ok) {
-      throw new Error(
-        "Mission API request failed"
-      );
-    }
+<script>
 
-    const mission =
-      await response.json();
+let running=false;
 
-    console.log(
-      "Mission data:",
-      mission
-    );
+let timer;
 
-  } catch (error) {
+let altitude=0;
 
-    console.error(
-      "Mission data unavailable:",
-      error
-    );
+let velocity=0;
 
-  }
+let fuel=100;
+
+let progress=0;
+
+
+function log(message){
+
+const box=document.getElementById("log");
+
+box.innerHTML +=
+"["+
+new Date().toLocaleTimeString()+
+"] "+
+message+
+"<br>";
+
+box.scrollTop=box.scrollHeight;
+
 }
 
-loadMissionData();
-  async function testMissionControlAPI() {
-    if (!API_URL) {
-      console.log(
-        "Mission Control API is not connected yet."
-      );
-      return;
-    }
 
-    try {
-      const health =
-        await getSystemHealth(API_URL);
+function launch(){
 
-      console.log(
-        "2060 Mission Control API:",
-        health.status
-      );
+if(running)return;
 
-    } catch (error) {
-      console.error(
-        "API connection failed:",
-        error
-      );
-    }
-  }
+running=true;
 
-  testMissionControlAPI();
-</script><script>
-const missionForm = document.getElementById("missionForm");
-const missionMessage = document.getElementById("missionMessage");
+document.getElementById("missionStatus").textContent=
+"LAUNCHING";
 
-if (missionForm) {
-  missionForm.addEventListener("submit", async function(event) {
-    event.preventDefault();
+document.getElementById("missionStatus").style.color=
+"#42d9ff";
 
-    missionMessage.textContent = "Sending mission...";
+log("LAUNCH SEQUENCE STARTED");
 
-    try {
-      const mission = await createMission(API_URL, {
-        missionName: document.getElementById("missionName").value,
-        vehicleId: document.getElementById("vehicleId").value,
-        launchSite: document.getElementById("launchSite").value
-      });
+let countdown=5;
 
-      missionMessage.textContent =
-        "Mission created: " + mission.missionId;
+log("COUNTDOWN T-5");
 
-      missionForm.reset();
+const count=setInterval(()=>{
 
-    } catch (error) {
-      missionMessage.textContent =
-        "Mission API is not connected yet.";
+countdown--;
 
-      console.error(error);
-    }
-  });
+if(countdown>0){
+
+log("COUNTDOWN T-"+countdown);
+
+}else{
+
+clearInterval(count);
+
+log("LIFTOFF");
+
+document.getElementById("missionStatus").textContent=
+"IN FLIGHT";
+
+timer=setInterval(updateTelemetry,1000);
+
 }
+
+},1000);
+
+}
+
+
+function updateTelemetry(){
+
+altitude+=Math.random()*35+10;
+
+velocity+=Math.random()*120+80;
+
+fuel-=0.8;
+
+progress+=2;
+
+if(progress>100)progress=100;
+
+if(fuel<0)fuel=0;
+
+document.getElementById("altitude").textContent=
+altitude.toFixed(0)+" km";
+
+document.getElementById("velocity").textContent=
+velocity.toFixed(0)+" km/h";
+
+document.getElementById("fuel").textContent=
+fuel.toFixed(0)+"%";
+
+document.getElementById("progressText").textContent=
+progress.toFixed(0)+"%";
+
+document.getElementById("progressBar").style.width=
+progress+"%";
+
+
+const rocket=document.getElementById("rocket");
+
+rocket.style.left=
+Math.min(88,70+progress*.18)+"%";
+
+rocket.style.top=
+Math.max(8,28-progress*.18)+"%";
+
+
+if(progress>35){
+
+document.getElementById("orbitStep").className=
+"step current";
+
+}
+
+
+if(progress>=100){
+
+clearInterval(timer);
+
+running=false;
+
+document.getElementById("missionStatus").textContent=
+"MISSION COMPLETE";
+
+document.getElementById("missionStatus").style.color=
+"#49f3a4";
+
+log("MISSION COMPLETE");
+
+}
+
+}
+
+
+function abortMission(){
+
+clearInterval(timer);
+
+running=false;
+
+document.getElementById("missionStatus").textContent=
+"ABORTED";
+
+document.getElementById("missionStatus").style.color=
+"#ff5872";
+
+log("⚠ ABORT COMMAND EXECUTED");
+
+}
+
+
+function resetMission(){
+
+clearInterval(timer);
+
+running=false;
+
+altitude=0;
+
+velocity=0;
+
+fuel=100;
+
+progress=0;
+
+document.getElementById("altitude").textContent=
+"0 km";
+
+document.getElementById("velocity").textContent=
+"0 km/h";
+
+document.getElementById("fuel").textContent=
+"100%";
+
+document.getElementById("progressText").textContent=
+"0%";
+
+document.getElementById("progressBar").style.width=
+"0%";
+
+document.getElementById("rocket").style.left=
+"70%";
+
+document.getElementById("rocket").style.top=
+"28%";
+
+document.getElementById("missionStatus").textContent=
+"READY";
+
+document.getElementById("missionStatus").style.color=
+"#49f3a4";
+
+log("MISSION RESET");
+
+}
+
+
+function createMission(){
+
+const name=
+document.getElementById("missionName").value ||
+"MISSION ALPHA";
+
+const vehicle=
+document.getElementById("vehicleId").value ||
+"2060-X1";
+
+const site=
+document.getElementById("launchSite").value;
+
+const history=
+document.getElementById("history");
+
+const item=document.createElement("div");
+
+item.className="history-item";
+
+item.textContent=
+"NEW — "+
+name+
+" — "+
+vehicle+
+" — "+
+site+
+" — READY";
+
+history.prepend(item);
+
+log(
+"NEW MISSION CREATED: "+
+name+
+" / "+
+vehicle+
+" / "+
+site
+);
+
+document.getElementById("missionName").value="";
+
+}
+
 </script>
+
 </body>
-        </html>
+  </html>
