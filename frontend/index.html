@@ -112,10 +112,16 @@ button{cursor:pointer}
 let running=false,timer=null,a=0,v=0,f=100;
 
 function login(){
- if(document.getElementById("user").value==="admin" && document.getElementById("pass").value==="2060"){
+ const username=document.getElementById("user").value.trim();
+ const password=document.getElementById("pass").value.trim();
+
+ if(username==="admin" && password==="2060"){
   document.getElementById("login").style.display="none";
   document.getElementById("app").style.display="grid";
- }else document.getElementById("error").textContent="Use demo access: admin / 2060";
+  document.getElementById("error").textContent="";
+ }else{
+  document.getElementById("error").textContent="Use demo access: admin / 2060";
+ }
 }
 
 function logout(){
