@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+hi<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -758,6 +758,350 @@ name || "MC-001";
 updateDisplay();
 
 </script>
+<!-- 2060 V19 PROFESSIONAL MISSION WORKSPACE -->
+<style>
+.moc{
+margin-top:20px;
+background:#060b10;
+border:1px solid #263746;
+border-radius:10px;
+overflow:hidden;
+}
 
+.moc-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 16px;
+background:#0b141d;
+border-bottom:1px solid #263746;
+}
+
+.moc-title{
+font-size:12px;
+font-weight:700;
+letter-spacing:1.5px;
+}
+
+.moc-live{
+font-size:10px;
+color:#55e88a;
+}
+
+.moc-grid{
+display:grid;
+grid-template-columns:180px 1fr 260px;
+min-height:480px;
+}
+
+.moc-nav{
+background:#081018;
+border-right:1px solid #263746;
+padding:10px;
+}
+
+.moc-nav button{
+width:100%;
+text-align:left;
+margin-bottom:5px;
+background:transparent;
+border:1px solid transparent;
+color:#8196a7;
+padding:11px;
+font-size:10px;
+letter-spacing:.7px;
+}
+
+.moc-nav button:hover,
+.moc-nav button.active{
+background:#10202d;
+border-color:#29485e;
+color:#fff;
+}
+
+.moc-center{
+padding:14px;
+background:#05090e;
+}
+
+.vehicle-display{
+height:300px;
+border:1px solid #263746;
+border-radius:7px;
+position:relative;
+overflow:hidden;
+background:
+radial-gradient(circle at 50% 55%,rgba(73,183,255,.08),transparent 25%),
+linear-gradient(rgba(73,183,255,.035) 1px,transparent 1px),
+linear-gradient(90deg,rgba(73,183,255,.035) 1px,transparent 1px);
+background-size:auto,40px 40px,40px 40px;
+}
+
+.vehicle-display:before{
+content:"2060-X1";
+position:absolute;
+top:12px;
+left:14px;
+font-size:10px;
+color:#8196a7;
+letter-spacing:1px;
+}
+
+.earth{
+position:absolute;
+width:220px;
+height:220px;
+border-radius:50%;
+left:50%;
+top:58%;
+transform:translate(-50%,-50%);
+background:
+radial-gradient(circle at 35% 30%,#2c5870,#102633 48%,#071018 72%);
+box-shadow:0 0 50px rgba(73,183,255,.15);
+}
+
+.orbit-line{
+position:absolute;
+width:330px;
+height:145px;
+border:1px solid rgba(73,183,255,.5);
+border-radius:50%;
+left:50%;
+top:52%;
+transform:translate(-50%,-50%) rotate(-12deg);
+}
+
+.vehicle{
+position:absolute;
+left:73%;
+top:29%;
+width:12px;
+height:12px;
+border-radius:50%;
+background:#55e88a;
+box-shadow:0 0 14px #55e88a;
+animation:vehicleOrbit 7s linear infinite;
+}
+
+@keyframes vehicleOrbit{
+0%{left:73%;top:29%}
+25%{left:57%;top:18%}
+50%{left:28%;top:42%}
+75%{left:48%;top:72%}
+100%{left:73%;top:29%}
+}
+
+.display-label{
+position:absolute;
+bottom:12px;
+left:14px;
+font-size:10px;
+color:#657b8b;
+}
+
+.moc-right{
+background:#081018;
+border-left:1px solid #263746;
+padding:14px;
+}
+
+.readout{
+padding:12px 0;
+border-bottom:1px solid #1d2b36;
+}
+
+.readout label{
+display:block;
+font-size:9px;
+color:#657b8b;
+letter-spacing:1px;
+margin-bottom:5px;
+}
+
+.readout strong{
+font-size:19px;
+}
+
+.alerts{
+margin-top:15px;
+}
+
+.alert-item{
+font-size:10px;
+padding:9px;
+margin-bottom:6px;
+background:#0c171e;
+border-left:2px solid #55e88a;
+color:#9aabb7;
+}
+
+.telemetry-strip{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:8px;
+margin-top:12px;
+}
+
+.telemetry-box{
+background:#081018;
+border:1px solid #20323f;
+border-radius:6px;
+padding:11px;
+}
+
+.telemetry-box span{
+display:block;
+font-size:8px;
+color:#657b8b;
+margin-bottom:5px;
+}
+
+.telemetry-box strong{
+font-size:14px;
+}
+
+@media(max-width:950px){
+.moc-grid{grid-template-columns:1fr}
+.moc-nav{
+border-right:0;
+border-bottom:1px solid #263746;
+display:flex;
+overflow-x:auto;
+}
+.moc-nav button{
+min-width:120px;
+margin-right:5px;
+}
+.moc-right{
+border-left:0;
+border-top:1px solid #263746;
+}
+}
+
+@media(max-width:600px){
+.telemetry-strip{grid-template-columns:repeat(2,1fr)}
+.vehicle-display{height:250px}
+}
+</style>
+
+<section class="moc">
+
+<div class="moc-head">
+<div class="moc-title">2060 MISSION OPERATIONS CENTER</div>
+<div class="moc-live">● LIVE TELEMETRY</div>
+</div>
+
+<div class="moc-grid">
+
+<aside class="moc-nav">
+<button class="active">MISSION</button>
+<button>FLIGHT DIRECTOR</button>
+<button>TELEMETRY</button>
+<button>ORBIT</button>
+<button>SYSTEMS</button>
+<button>COMMUNICATIONS</button>
+<button>ANALYTICS</button>
+</aside>
+
+<main class="moc-center">
+
+<div class="vehicle-display">
+
+<div class="earth"></div>
+<div class="orbit-line"></div>
+<div class="vehicle"></div>
+
+<div class="display-label">
+VEHICLE TRACKING • ORBITAL VIEW • LIVE
+</div>
+
+</div>
+
+<div class="telemetry-strip">
+
+<div class="telemetry-box">
+<span>ALTITUDE</span>
+<strong id="mocAltitude">0 km</strong>
+</div>
+
+<div class="telemetry-box">
+<span>VELOCITY</span>
+<strong id="mocVelocity">0 km/h</strong>
+</div>
+
+<div class="telemetry-box">
+<span>PROPELLANT</span>
+<strong id="mocFuel">100%</strong>
+</div>
+
+<div class="telemetry-box">
+<span>HEALTH</span>
+<strong id="mocHealth">100%</strong>
+</div>
+
+</div>
+
+</main>
+
+<aside class="moc-right">
+
+<div class="readout">
+<label>MISSION PHASE</label>
+<strong id="mocPhase">STANDBY</strong>
+</div>
+
+<div class="readout">
+<label>MISSION ELAPSED TIME</label>
+<strong id="mocClock">00:00:00</strong>
+</div>
+
+<div class="readout">
+<label>VEHICLE STATUS</label>
+<strong class="good">NOMINAL</strong>
+</div>
+
+<div class="alerts">
+
+<div class="alert-item">SYSTEMS — NOMINAL</div>
+<div class="alert-item">NAVIGATION — LOCKED</div>
+<div class="alert-item">COMMUNICATIONS — ONLINE</div>
+<div class="alert-item">TELEMETRY — STREAMING</div>
+
+</div>
+
+</aside>
+
+</div>
+</section>
+
+<script>
+setInterval(function(){
+
+if(typeof altitude !== "undefined"){
+
+document.getElementById("mocAltitude").textContent =
+altitude+" km";
+
+document.getElementById("mocVelocity").textContent =
+speed+" km/h";
+
+document.getElementById("mocFuel").textContent =
+fuel+"%";
+
+document.getElementById("mocHealth").textContent =
+health+"%";
+
+document.getElementById("mocClock").textContent =
+document.getElementById("clock").textContent;
+
+if(document.getElementById("phase")){
+document.getElementById("mocPhase").textContent =
+document.getElementById("phase").textContent;
+}
+
+}
+
+},500);
+</script>
 </body>
   </html>
