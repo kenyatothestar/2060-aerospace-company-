@@ -294,56 +294,29 @@ body {
 
 <script>
 async function connectMissionAPI() {
-
   const status = document.getElementById("apiStatus");
 
   try {
-
-    let response;
-    try {
-      response = await fetch("http://localhost:4000/api/mission");
-    } catch (e) {
-      response = await fetch("http://localhost:4000/");
-    }
+    const response = await fetch("http://localhost:4000/");
 
     if (!response.ok) {
       throw new Error("API response " + response.status);
     }
 
-    const data = await response.json();
+    const text = await response.text();
 
     status.textContent = "● MISSION API ONLINE";
     status.className = "status api-ok";
+    document.getElementById("telemetryStatus").textContent = "ONLINE";
 
-    document.getElementById("missionStatus").textContent =
-      data.status || "ONLINE";
-
-    if (data.altitude !== undefined) {
-      document.getElementById("altitude").textContent =
-        data.altitude + " km";
+    if (text) {
+      console.log("Mission API:", text);
     }
-
-    if (data.velocity !== undefined) {
-      document.getElementById("velocity").textContent =
-        data.velocity + " km/s";
-    }
-
-    if (data.fuel !== undefined) {
-      document.getElementById("fuel").textContent =
-        data.fuel + "%";
-    }
-
-    document.getElementById("telemetryStatus").textContent =
-      "ONLINE";
 
   } catch (error) {
-
     status.textContent = "● API CONNECTION FAILED";
     status.className = "status api-error";
-
-    document.getElementById("telemetryStatus").textContent =
-      "OFFLINE";
-
+    document.getElementById("telemetryStatus").textContent = "OFFLINE";
     console.log("Mission API:", error.message);
   }
 }
