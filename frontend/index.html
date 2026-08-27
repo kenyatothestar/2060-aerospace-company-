@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2060 Mission Control</title>
+<title>2060 Aerospace — Mission Operations Center</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#05080d;color:#e8eef7;font-family:Arial,sans-serif}
@@ -66,14 +66,17 @@ button{cursor:pointer}
 <button onclick="page('systems',this)">SYSTEMS</button>
 <button onclick="page('communications',this)">COMMUNICATIONS</button>
 <button onclick="page('analytics',this)">ANALYTICS</button>
+<button onclick="page('operations',this)">OPERATIONS</button>
+<button onclick="page('alerts',this)">ALERTS & DIAGNOSTICS</button>
+<button onclick="page('history',this)">MISSION HISTORY</button>
 <button class="logout" onclick="logout()">LOG OUT</button>
 </div>
 </aside>
 
 <main class="main">
 <header class="top">
-<strong>MISSION OPERATIONS CENTER</strong>
-<span class="online">● DEMO SYSTEM ONLINE</span>
+<div><strong>2060 AEROSPACE</strong><br><small style="color:#718096">MISSION OPERATIONS CENTER</small></div>
+<span class="online">● SYSTEM ONLINE &nbsp; | &nbsp; MISSION ALPHA</span>
 </header>
 
 <section class="content">
@@ -104,6 +107,51 @@ button{cursor:pointer}
 
 <div id="analytics" class="page"><div class="hero"><h1>ANALYTICS</h1><p>Mission performance analytics</p></div><div class="panel"><h3>MISSION ANALYTICS</h3><p>Telemetry analytics module ready.</p><p>Performance monitoring module ready.</p></div></div>
 
+
+<div id="operations" class="page">
+<div class="hero"><h1>OPERATIONS</h1><p>Integrated mission operations environment</p></div>
+<div class="cards">
+<div class="card"><div class="label">MISSION PHASE</div><div class="value">PRE-LAUNCH</div></div>
+<div class="card"><div class="label">VEHICLE</div><div class="value">ALPHA-01</div></div>
+<div class="card"><div class="label">GROUND LINK</div><div class="value">NOMINAL</div></div>
+<div class="card"><div class="label">MISSION CLOCK</div><div id="clock" class="value">00:00:00</div></div>
+</div>
+<div class="panels">
+<div class="panel"><h3>MISSION TIMELINE</h3>
+<p>✓ MISSION INITIALIZATION</p>
+<p>✓ VEHICLE SYSTEM CHECK</p>
+<p>● TELEMETRY LINK</p>
+<p>○ FLIGHT OPERATIONS</p>
+<p>○ MISSION COMPLETION</p>
+</div>
+<div class="panel"><h3>ACTIVE ALERTS</h3>
+<p>NO CRITICAL ALERTS</p>
+<p>ALL PRIMARY SYSTEMS NOMINAL</p>
+</div>
+</div>
+</div>
+
+<div id="history" class="page">
+<div class="hero"><h1>MISSION HISTORY</h1><p>Mission records and previous operations</p></div>
+<div class="panel"><h3>MISSION RECORDS</h3>
+<p>MISSION ALPHA — ACTIVE SESSION</p>
+<p>STATUS — READY</p>
+<p>TELEMETRY — SIMULATED</p>
+<p>HISTORY DATABASE — READY</p>
+</div>
+</div>
+
+<div id="alerts" class="page">
+<div class="hero"><h1>ALERTS & DIAGNOSTICS</h1><p>System warnings and operational diagnostics</p></div>
+<div class="panel"><h3>SYSTEM DIAGNOSTICS</h3>
+<p>POWER — NOMINAL</p>
+<p>PROPULSION — STANDBY</p>
+<p>GUIDANCE — NOMINAL</p>
+<p>COMMUNICATIONS — NOMINAL</p>
+<p>TELEMETRY — SIMULATED</p>
+<p>FAULT MONITOR — READY</p>
+</div>
+</div>
 </section>
 </main>
 </div>
@@ -151,6 +199,14 @@ function update(){
 function launch(){running=true;clearInterval(timer);timer=setInterval(update,1000);update()}
 function abort(){running=false;clearInterval(timer);document.getElementById("status").textContent="ABORTED"}
 function reset(){running=false;clearInterval(timer);a=0;v=0;f=100;update();document.getElementById("status").textContent="STANDBY";document.getElementById("alt").textContent="0 km";document.getElementById("vel").textContent="0 km/s";document.getElementById("fuel").textContent="100%";document.getElementById("alt2").textContent="0 km";document.getElementById("vel2").textContent="0 km/s";document.getElementById("fuel2").textContent="100%"}
+
+setInterval(function(){
+ const now=new Date();
+ const t=[now.getHours(),now.getMinutes(),now.getSeconds()]
+   .map(x=>String(x).padStart(2,"0")).join(":");
+ const c=document.getElementById("clock");
+ if(c)c.textContent=t;
+},1000);
 </script>
 </body>
 </html>
