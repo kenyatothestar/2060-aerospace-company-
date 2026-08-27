@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2060 Mission Control</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05080d;color:#e5edf5;font-family:Arial,sans-serif}
+.app{display:flex;min-height:100vh}
+aside{width:230px;background:#080d14;border-right:1px solid #1b2a38;padding:25px 15px}
+.logo{font-size:26px;font-weight:700;letter-spacing:3px}
+.sub{font-size:10px;color:#6d8194;letter-spacing:2px;margin:5px 0 30px}
+nav div{padding:14px 12px;margin:4px 0;color:#91a4b7;font-size:12px;letter-spacing:1px;border-radius:5px}
+nav .active{background:#122333;color:white;border-left:3px solid #42d9ff}
+main{flex:1;padding:20px}
+header{display:flex;justify-content:space-between;border-bottom:1px solid #1b2a38;padding-bottom:16px}
+h1{font-size:20px;letter-spacing:2px;margin:0}
+.small{font-size:10px;color:#6d8194;letter-spacing:1px;margin-top:6px}
+.online{color:#55e0a3;font-size:11px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:15px}
+.card,.panel{background:#0a1119;border:1px solid #1b2b3a;border-radius:7px;padding:17px}
+.label{font-size:10px;color:#71869a;letter-spacing:1.5px}
+.value{font-size:27px;font-weight:bold;margin-top:9px}
+.unit{font-size:10px;color:#71869a}
+.ok{color:#55e0a3;font-size:11px;margin-top:8px}
+.content{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}
+.panel h2{font-size:12px;letter-spacing:1.5px;margin:0 0 15px}
+.map{height:280px;position:relative;background:radial-gradient(circle,#11202c,#060a10 65%)}
+.orbit{position:absolute;width:430px;height:180px;border:1px solid #294457;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg)}
+.earth{position:absolute;width:60px;height:60px;background:#153c52;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 30px #174c68}
+.ship{position:absolute;width:9px;height:9px;background:white;border-radius:50%;left:74%;top:28%;box-shadow:0 0 15px white}
+.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #14212c;font-size:11px}
+.progress{height:5px;background:#16232e;margin-top:10px}
+.bar{height:100%;width:68%;background:#42d9ff}
+@media(max-width:800px){aside{display:none}.cards{grid-template-columns:1fr 1fr}.content{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+<div class="logo">2060</div>
+<div class="sub">AEROSPACE SYSTEMS</div>
+<nav>
+<div class="active">MISSION</div>
+<div>FLIGHT DIRECTOR</div>
+<div>TELEMETRY</div>
+<div>ORBIT</div>
+<div>SYSTEMS</div>
+<div>COMMUNICATIONS</div>
+<div>ANALYTICS</div>
+</nav>
+</aside>
+
+<main>
+<header>
+<div>
+<h1>MISSION CONTROL</h1>
+<div class="small">MC-001 • DEEP SPACE MISSION</div>
+</div>
+<div class="online">● SYSTEM ONLINE</div>
+</header>
+
+<section class="cards">
+<div class="card"><div class="label">MISSION STATUS</div><div class="value">ACTIVE</div><div class="ok">NOMINAL</div></div>
+<div class="card"><div class="label">ALTITUDE</div><div class="value" id="alt">384,220</div><div class="unit">KM</div></div>
+<div class="card"><div class="label">SPEED</div><div class="value">27.4</div><div class="unit">KM/S</div></div>
+<div class="card"><div class="label">FUEL</div><div class="value">82.6</div><div class="unit">%</div></div>
+</section>
+
+<section class="content">
+<div class="panel">
+<h2>TRAJECTORY MONITOR</h2>
+<div class="map">
+<div class="orbit"></div>
+<div class="earth"></div>
+<div class="ship"></div>
+</div>
+</div>
+
+<div class="panel">
+<h2>SPACECRAFT SYSTEMS</h2>
+<div class="row"><span>POWER</span><span class="ok">NOMINAL</span></div>
+<div class="row"><span>PROPULSION</span><span class="ok">NOMINAL</span></div>
+<div class="row"><span>THERMAL</span><span class="ok">NOMINAL</span></div>
+<div class="row"><span>COMMUNICATION</span><span class="ok">CONNECTED</span></div>
+<div class="row"><span>NAVIGATION</span><span class="ok">NOMINAL</span></div>
+</div>
+</section>
+
+<div class="panel" style="margin-top:12px">
+<h2>MISSION PROGRESS</h2>
+<div class="label">DEEP SPACE TRANSIT — 68%</div>
+<div class="progress"><div class="bar"></div></div>
+</div>
+</main>
+</div>
+
+<script>
+let a=384220;
+setInterval(()=>{a+=Math.floor(Math.random()*8)+1;document.getElementById("alt").textContent=a.toLocaleString()},2000);
+</script>
+
+<script>
+async function connectMissionAPI() {
+  try {
+    const response = await fetch("http://localhost:4000/api/telemetry");
+    if (!response.ok) throw new Error("API HTTP " + response.status);
+
+    const data = await response.json();
+
+    if (data.altitude !== undefined)
+      document.getElementById("alt").textContent =
+        Number(data.altitude).toLocaleString();
+
+    if (data.speed !== undefined)
+      document.querySelectorAll(".value")[2].textContent = data.speed;
+
+    if (data.fuel !== undefined)
+      document.querySelectorAll(".value")[3].textContent = data.fuel;
+
+    console.log("2060 Mission API CONNECTED", data);
+  } catch (error) {
+    console.error("2060 Mission API CONNECTION ERROR:", error);
+  }
+}
+
+connectMissionAPI();
+setInterval(connectMissionAPI, 3000);
+</script>
+</body>
+
+</html>

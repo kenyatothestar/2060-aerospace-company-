@@ -1,0 +1,13 @@
+{
+  "name": "2060-mission-control",
+  "version": "4.0.0",
+  "description": "2060 Aerospace Mission Control Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5"
+  }
+}
