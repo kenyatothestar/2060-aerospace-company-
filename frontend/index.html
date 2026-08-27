@@ -194,6 +194,14 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+#launchBtn {
+  background: #162b20;
+  color: #8ff0b0;
+  border: 1px solid #2f6b46;
+  border-radius: 5px;
+  font-weight: bold;
+}
 </style>
 </head>
 
@@ -223,7 +231,7 @@ body {
     <header class="topbar">
       <div class="title">MISSION OPERATIONS CENTER</div>
       <div class="status" id="apiStatus">
-        ● CONNECTING TO MISSION API
+        ● API DEFERRED — SIMULATION ONLINE
       </div>
     </header>
 
@@ -258,7 +266,23 @@ body {
 
       </div>
 
-      <div class="panel-grid">
+      
+<div class="panel" id="flightControls" style="margin-top:15px;">
+  <h3>FLIGHT OPERATIONS</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button id="launchBtn" onclick="launchMission()" style="padding:12px 20px;cursor:pointer;">
+      🚀 LAUNCH
+    </button>
+    <button onclick="abortMission()" style="padding:12px 20px;cursor:pointer;">
+      ABORT
+    </button>
+    <button onclick="resetMission()" style="padding:12px 20px;cursor:pointer;">
+      RESET
+    </button>
+  </div>
+</div>
+
+<div class="panel-grid">
 
         <div class="panel">
           <h3>MISSION OVERVIEW</h3>
