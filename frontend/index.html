@@ -1100,7 +1100,252 @@ document.getElementById("phase").textContent;
 }
 
 }
+<!-- 2060 V19.2 LIVE TELEMETRY -->
+<style>
+.v192{
+margin-top:18px;
+background:#071018;
+border:1px solid #263746;
+border-radius:10px;
+padding:16px;
+}
 
+.v192-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:14px;
+}
+
+.v192-head h2{
+font-size:13px;
+letter-spacing:1px;
+}
+
+.v192-head span{
+font-size:10px;
+color:#55e88a;
+}
+
+.v192-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.v192-panel{
+background:#050a0f;
+border:1px solid #1f313e;
+border-radius:8px;
+padding:12px;
+}
+
+.v192-panel h3{
+font-size:10px;
+color:#8196a7;
+letter-spacing:1px;
+margin-bottom:8px;
+}
+
+.chart{
+height:150px;
+position:relative;
+overflow:hidden;
+border-top:1px solid #172833;
+border-bottom:1px solid #172833;
+background:
+linear-gradient(rgba(73,183,255,.06) 1px,transparent 1px),
+linear-gradient(90deg,rgba(73,183,255,.06) 1px,transparent 1px);
+background-size:30px 30px;
+}
+
+.chart svg{
+width:100%;
+height:100%;
+}
+
+.chart-line{
+fill:none;
+stroke:#49b7ff;
+stroke-width:2;
+vector-effect:non-scaling-stroke;
+filter:drop-shadow(0 0 4px rgba(73,183,255,.5));
+}
+
+.chart-line-green{
+fill:none;
+stroke:#55e88a;
+stroke-width:2;
+vector-effect:non-scaling-stroke;
+filter:drop-shadow(0 0 4px rgba(85,232,138,.4));
+}
+
+.chart-label{
+position:absolute;
+top:7px;
+right:8px;
+font-size:9px;
+color:#657b8b;
+}
+
+.v192-table{
+width:100%;
+margin-top:12px;
+border-collapse:collapse;
+}
+
+.v192-table td{
+padding:8px 4px;
+border-bottom:1px solid #162631;
+font-size:10px;
+}
+
+.v192-table td:last-child{
+text-align:right;
+font-weight:bold;
+}
+
+.nominal{color:#55e88a}
+.caution{color:#ffc857}
+.warning{color:#ff6464}
+
+@media(max-width:800px){
+.v192-grid{grid-template-columns:1fr}
+}
+</style>
+
+<section class="v192">
+
+<div class="v192-head">
+<h2>LIVE TELEMETRY ANALYSIS</h2>
+<span>● DATA STREAM ACTIVE</span>
+</div>
+
+<div class="v192-grid">
+
+<div class="v192-panel">
+<h3>ALTITUDE / FLIGHT PATH</h3>
+
+<div class="chart">
+<div class="chart-label">km</div>
+
+<svg viewBox="0 0 600 150" preserveAspectRatio="none">
+<polyline
+id="altitudeGraph"
+class="chart-line"
+points="0,135 60,130 120,122 180,110 240,98 300,88 360,75 420,62 480,48 540,34 600,22"
+/>
+</svg>
+</div>
+</div>
+
+<div class="v192-panel">
+<h3>VELOCITY PROFILE</h3>
+
+<div class="chart">
+<div class="chart-label">km/h</div>
+
+<svg viewBox="0 0 600 150" preserveAspectRatio="none">
+<polyline
+id="velocityGraph"
+class="chart-line-green"
+points="0,138 60,132 120,125 180,114 240,100 300,84 360,70 420,56 480,42 540,29 600,18"
+/>
+</svg>
+</div>
+</div>
+
+</div>
+
+<table class="v192-table">
+
+<tr>
+<td>ALTITUDE TREND</td>
+<td id="altTrend" class="nominal">ASCENDING</td>
+</tr>
+
+<tr>
+<td>VELOCITY TREND</td>
+<td id="velocityTrend" class="nominal">INCREASING</td>
+</tr>
+
+<tr>
+<td>TELEMETRY QUALITY</td>
+<td class="nominal">100% VALID</td>
+</tr>
+
+<tr>
+<td>DATA LINK</td>
+<td class="nominal">LIVE</td>
+</tr>
+
+</table>
+
+</section>
+
+<script>
+(function(){
+
+let altitudeHistory=[];
+let velocityHistory=[];
+
+function drawGraph(id,data){
+
+if(data.length<2)return;
+
+let max=Math.max(...data,1);
+let min=Math.min(...data);
+let range=Math.max(max-min,1);
+
+let points=data.map(function(value,index){
+
+let x=(index/(data.length-1))*600;
+let y=138-((value-min)/range)*116;
+
+return x.toFixed(1)+","+y.toFixed(1);
+
+}).join(" ");
+
+document.getElementById(id).setAttribute("points",points);
+
+}
+
+setInterval(function(){
+
+if(typeof altitude==="undefined")return;
+
+altitudeHistory.push(Number(altitude));
+velocityHistory.push(Number(speed));
+
+if(altitudeHistory.length>30)
+altitudeHistory.shift();
+
+if(velocityHistory.length>30)
+velocityHistory.shift();
+
+drawGraph("altitudeGraph",altitudeHistory);
+drawGraph("velocityGraph",velocityHistory);
+
+if(altitudeHistory.length>1){
+
+let a=altitudeHistory;
+
+document.getElementById("altTrend").textContent=
+a[a.length-1]>=a[a.length-2]
+?"ASCENDING":"DESCENDING";
+
+let v=velocityHistory;
+
+document.getElementById("velocityTrend").textContent=
+v[v.length-1]>=v[v.length-2]
+?"INCREASING":"DECREASING";
+
+}
+
+},1000);
+
+})();
+</script>
 },500);
 </script>
 </body>
