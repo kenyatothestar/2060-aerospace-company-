@@ -299,7 +299,12 @@ async function connectMissionAPI() {
 
   try {
 
-    const response = await fetch("/api/mission");
+    let response;
+    try {
+      response = await fetch("http://localhost:4000/api/mission");
+    } catch (e) {
+      response = await fetch("http://localhost:4000/");
+    }
 
     if (!response.ok) {
       throw new Error("API response " + response.status);
