@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2060 Mission Control</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#05080c;color:#e8edf2;font-family:Arial,Helvetica,sans-serif}
+button{font:inherit}
+#login{height:100vh;display:flex;align-items:center;justify-content:center;background:#030609}
+.login{width:390px;padding:38px;background:#091018;border:1px solid #243442;border-radius:10px}
+.login h1{font-size:42px;letter-spacing:7px;margin:0}
+.login .sub{color:#718394;letter-spacing:2px;margin:5px 0 28px}
+.login input{display:block;width:100%;margin:10px 0;padding:13px;background:#04070a;border:1px solid #293947;color:white;border-radius:5px}
+.login button{width:100%;padding:13px;background:#163523;color:#9bf0b6;border:1px solid #356c49;border-radius:5px;font-weight:bold}
+#error{height:18px;color:#ef7777;font-size:12px;margin-top:10px}
+#app{display:none;height:100vh;grid-template-columns:230px 1fr}
+aside{background:#070b10;border-right:1px solid #1b2935;padding:20px 12px;overflow:auto}
+.logo{font-size:28px;font-weight:bold;letter-spacing:4px}
+.logo small{display:block;color:#617182;font-size:9px;letter-spacing:1px;margin-top:4px}
+.group{margin:28px 9px 8px;color:#4d6173;font-size:9px;letter-spacing:2px}
+nav button{width:100%;display:block;border:0;background:none;color:#82909e;text-align:left;padding:11px;border-radius:5px;margin:2px 0}
+nav button:hover,nav button.active{background:#111a23;color:white}
+nav .exit{margin-top:20px;background:#241517;color:#ef9999}
+main{min-width:0;overflow:auto}
+header{height:68px;border-bottom:1px solid #1b2935;background:#070c11;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+header strong{font-size:13px;letter-spacing:1px}
+header small{display:block;color:#627487;margin-top:4px;font-size:9px}
+.online{color:#6ee09b;font-size:11px}
+.content{padding:20px;max-width:1600px;margin:auto}
+.page{display:none}.page.active{display:block}
+.hero{padding:21px;background:#09121b;border:1px solid #1d2d3a;border-radius:8px;margin-bottom:13px}
+.hero h1{margin:0 0 6px;font-size:23px}.hero p{margin:0;color:#78899a}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.card,.panel{background:#080e14;border:1px solid #1b2a36;border-radius:7px;padding:16px}
+.label{font-size:9px;color:#66798b;letter-spacing:1.4px;margin-bottom:8px}
+.value{font-size:23px;font-weight:bold}
+.green{color:#70dda0}.amber{color:#e3c66a}.red{color:#ed7777}.blue{color:#79aaff}
+.grid2{display:grid;grid-template-columns:2fr 1fr;gap:11px;margin-top:11px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:11px}
+.panel h3{font-size:12px;letter-spacing:1px;margin:0 0 14px}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #15232d;font-size:11px}
+.row:last-child{border:0}
+.timeline{border-left:2px solid #2c3b48;padding-left:17px}
+.timeline div{font-size:12px;color:#8998a7;padding:9px 0}
+.timeline .done{color:#70dda0}.timeline .current{color:white;font-weight:bold}
+.control{border:1px solid #356b49;background:#14291e;color:#9af0b5;border-radius:5px;padding:11px 17px;margin:3px;font-weight:bold}
+.control.abort{background:#281618;border-color:#63383b;color:#ef9999}
+.control.reset{background:#111a22;border-color:#30404c;color:#b7c4d0}
+.chart{height:210px;background:#04080c;border:1px solid #172631;border-radius:5px;position:relative;overflow:hidden}
+.chart:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 41px,#14212b 42px),repeating-linear-gradient(90deg,transparent 0 70px,#14212b 71px)}
+.trace{position:absolute;left:-10%;right:-10%;top:57%;height:2px;background:#70dda0;transform:rotate(-9deg)}
+.log{height:190px;overflow:auto;background:#030608;border:1px solid #17232d;padding:11px;font:10px monospace;color:#72dca0}
+.progress{height:7px;background:#17242d;border-radius:5px;overflow:hidden;margin-top:7px}
+.progress span{display:block;height:100%;width:100%;background:#70dda0}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th,td{text-align:left;padding:10px;border-bottom:1px solid #17232d}
+th{font-size:9px;color:#617487;letter-spacing:1px}
+.alert{border:1px solid #4b4026;background:#17140c;color:#d9c780;padding:11px;border-radius:5px;font-size:11px;margin:6px 0}
+.ok{border:1px solid #244732;background:#0b1911;color:#7ce1a0;padding:11px;border-radius:5px;font-size:11px}
+@media(max-width:850px){#app{grid-template-columns:1fr}aside{display:none}.cards{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}}
+@media(max-width:500px){.cards{grid-template-columns:1fr}.content{padding:10px}}
+</style>
+</head>
+<body>
+
+<div id="login">
+<div class="login">
+<h1>2060</h1>
+<div class="sub">MISSION CONTROL</div>
+<input id="username" placeholder="USERNAME">
+<input id="password" type="password" placeholder="PASSWORD">
+<button onclick="login()">ENTER MISSION CONTROL</button>
+<div id="error"></div>
+<small style="color:#647487">Authorized mission personnel</small>
+</div>
+</div>
+
+<div id="app">
+<aside>
+<div class="logo">2060<small>AEROSPACE SYSTEMS</small></div>
+
+<div class="group">MISSION</div>
+<nav>
+<button class="active" onclick="showPage('dashboard',this)">▣ DASHBOARD</button>
+<button onclick="showPage('launch',this)">🚀 LAUNCH CONTROL</button>
+<button onclick="showPage('telemetry',this)">◈ TELEMETRY</button>
+<button onclick="showPage('trajectory',this)">⌁ TRAJECTORY</button>
+</nav>
+
+<div class="group">OPERATIONS</div>
+<nav>
+<button onclick="showPage('missions',this)">MISSIONS</button>
+<button onclick="showPage('systems',this)">⚙ SYSTEMS</button>
+<button onclick="showPage('communications',this)">⌁ COMMUNICATIONS</button>
+<button onclick="showPage('alerts',this)">⚠ ALERTS</button>
+</nav>
+
+<div class="group">DATA</div>
+<nav>
+<button onclick="showPage('analytics',this)">▥ ANALYTICS</button>
+<button onclick="showPage('history',this)">◷ HISTORY</button>
+<button onclick="showPage('settings',this)">⚙ SETTINGS</button>
+<button class="exit" onclick="logout()">LOG OUT</button>
+</nav>
+</aside>
+
+<main>
+<header>
+<div><strong>2060 MISSION CONTROL</strong><small>MISSION OPERATIONS CENTER • ALPHA PROGRAM</small></div>
+<div class="online">● SYSTEM ONLINE</div>
+</header>
+
+<div class="content">
+
+<div id="dashboard" class="page active">
+<div class="hero"><h1>MISSION ALPHA</h1><p>Mission Control Dashboard</p></div>
+<div class="cards">
+<div class="card"><div class="label">MISSION STATUS</div><div id="status" class="value green">STANDBY</div></div>
+<div class="card"><div class="label">MISSION TIME</div><div id="missionTime" class="value">00:00:00</div></div>
+<div class="card"><div class="label">ALTITUDE</div><div id="alt" class="value">0 km</div></div>
+<div class="card"><div class="label">VELOCITY</div><div id="vel" class="value">0.00 km/s</div></div>
+</div>
+<div class="grid2">
+<div class="panel">
+<h3>LIVE MISSION VIEW</h3>
+<div class="chart"><div class="trace"></div></div>
+</div>
+<div class="panel">
+<h3>VEHICLE STATUS</h3>
+<div class="row"><span>VEHICLE</span><span>ALPHA-01</span></div>
+<div class="row"><span>STAGE</span><span id="stage">GROUND</span></div>
+<div class="row"><span>FUEL</span><span id="fuel" class="green">100%</span></div>
+<div class="row"><span>POWER</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>GUIDANCE</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>TELEMETRY</span><span class="blue">ACTIVE</span></div>
+</div>
+</div>
+<div class="grid3">
+<div class="panel"><h3>SYSTEM HEALTH</h3><div class="value green">NOMINAL</div><div class="progress"><span></span></div></div>
+<div class="panel"><h3>GROUND LINK</h3><div class="value green">LOCKED</div><p>Mission communication ready.</p></div>
+<div class="panel"><h3>MISSION PHASE</h3><div id="phase" class="value amber">PRE-LAUNCH</div></div>
+</div>
+</div>
+
+<div id="launch" class="page">
+<div class="hero"><h1>LAUNCH CONTROL</h1><p>Flight Director command interface</p></div>
+<div class="grid2">
+<div class="panel"><h3>MISSION COMMAND</h3>
+<button class="control" onclick="launchMission()">🚀 LAUNCH</button>
+<button class="control abort" onclick="abortMission()">ABORT</button>
+<button class="control reset" onclick="resetMission()">RESET</button>
+<button class="control reset" onclick="replayMission()">REPLAY</button>
+<div style="margin-top:18px">
+<div class="row"><span>COMMAND AUTHORITY</span><span class="green">AUTHORIZED</span></div>
+<div class="row"><span>FLIGHT MODE</span><span id="flightMode">STANDBY</span></div>
+<div class="row"><span>PROPULSION</span><span id="propulsion" class="amber">STANDBY</span></div>
+</div>
+</div>
+<div class="panel"><h3>LAUNCH SEQUENCE</h3>
+<div class="timeline">
+<div class="done">✓ VEHICLE INITIALIZATION</div>
+<div class="done">✓ SYSTEMS CHECK</div>
+<div class="done">✓ TELEMETRY LINK</div>
+<div class="current">● LAUNCH COMMAND</div>
+<div>○ LIFTOFF</div>
+<div>○ ASCENT</div>
+<div>○ ORBIT INSERTION</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="telemetry" class="page">
+<div class="hero"><h1>TELEMETRY</h1><p>Live vehicle telemetry monitoring</p></div>
+<div class="cards">
+<div class="card"><div class="label">ALTITUDE</div><div id="altT" class="value">0 km</div></div>
+<div class="card"><div class="label">VELOCITY</div><div id="velT" class="value">0.00 km/s</div></div>
+<div class="card"><div class="label">PROPELLANT</div><div id="fuelT" class="value green">100%</div></div>
+<div class="card"><div class="label">TEMPERATURE</div><div id="tempT" class="value">22 °C</div></div>
+</div>
+<div class="grid2">
+<div class="panel"><h3>TELEMETRY GRAPH</h3><div class="chart"><div class="trace"></div></div></div>
+<div class="panel"><h3>LIVE DATA STREAM</h3><div id="log" class="log">[SYSTEM] Telemetry initialized<br>[SYSTEM] Waiting for vehicle data...</div></div>
+</div>
+</div>
+
+<div id="trajectory" class="page">
+<div class="hero"><h1>TRAJECTORY</h1><p>Flight path and orbital visualization</p></div>
+<div class="panel"><h3>MISSION TRAJECTORY</h3><div class="chart"><div class="trace"></div></div></div>
+<div class="grid3">
+<div class="card"><div class="label">ORBIT</div><div id="orbitStatus" class="value amber">STANDBY</div></div>
+<div class="card"><div class="label">TARGET</div><div class="value">LEO</div></div>
+<div class="card"><div class="label">GUIDANCE</div><div class="value green">NOMINAL</div></div>
+</div>
+</div>
+
+<div id="missions" class="page">
+<div class="hero"><h1>MISSIONS</h1><p>Mission management and vehicle assignments</p></div>
+<div class="panel"><h3>ACTIVE MISSIONS</h3>
+<table><tr><th>MISSION</th><th>VEHICLE</th><th>STATUS</th><th>MODE</th></tr>
+<tr><td>MISSION ALPHA</td><td>ALPHA-01</td><td class="green">READY</td><td>SIMULATION</td></tr>
+</table>
+</div>
+</div>
+
+<div id="systems" class="page">
+<div class="hero"><h1>SYSTEMS</h1><p>Vehicle health and subsystem monitoring</p></div>
+<div class="grid3">
+<div class="panel"><h3>POWER</h3><div class="value green">NOMINAL</div><div class="progress"><span></span></div></div>
+<div class="panel"><h3>PROPULSION</h3><div id="propSys" class="value amber">STANDBY</div><div class="progress"><span id="propProgress" style="width:0%"></span></div></div>
+<div class="panel"><h3>GUIDANCE</h3><div class="value green">NOMINAL</div><div class="progress"><span></span></div></div>
+</div>
+<div class="panel" style="margin-top:11px">
+<div class="row"><span>FLIGHT COMPUTER</span><span class="green">ONLINE</span></div>
+<div class="row"><span>THERMAL CONTROL</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>STRUCTURAL MONITOR</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>FUEL SYSTEM</span><span class="green">NOMINAL</span></div>
+</div>
+</div>
+
+<div id="communications" class="page">
+<div class="hero"><h1>COMMUNICATIONS</h1><p>Mission communication and ground station</p></div>
+<div class="cards">
+<div class="card"><div class="label">GROUND STATION</div><div class="value green">LOCKED</div></div>
+<div class="card"><div class="label">SIGNAL</div><div class="value">98%</div></div>
+<div class="card"><div class="label">CHANNEL</div><div class="value">MC-01</div></div>
+<div class="card"><div class="label">LINK MODE</div><div class="value blue">SIMULATED</div></div>
+</div>
+<div class="panel" style="margin-top:11px"><div class="ok">✓ Mission communication channel operational.</div></div>
+</div>
+
+<div id="alerts" class="page">
+<div class="hero"><h1>ALERTS</h1><p>Warnings, faults and recovery monitoring</p></div>
+<div class="ok">✓ NO CRITICAL FAULTS DETECTED</div>
+<div class="panel" style="margin-top:11px">
+<div class="row"><span>POWER</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>PROPULSION</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>GUIDANCE</span><span class="green">NOMINAL</span></div>
+<div class="row"><span>TELEMETRY</span><span class="green">NOMINAL</span></div>
+</div>
+</div>
+
+<div id="analytics" class="page">
+<div class="hero"><h1>ANALYTICS</h1><p>Mission performance analysis</p></div>
+<div class="grid3">
+<div class="card"><div class="label">VEHICLE HEALTH</div><div class="value green">100%</div></div>
+<div class="card"><div class="label">DATA QUALITY</div><div class="value green">100%</div></div>
+<div class="card"><div class="label">MISSION READINESS</div><div class="value green">100%</div></div>
+</div>
+<div class="panel" style="margin-top:11px"><h3>PERFORMANCE</h3><div class="chart"><div class="trace"></div></div></div>
+</div>
+
+<div id="history" class="page">
+<div class="hero"><h1>MISSION HISTORY</h1><p>Saved mission sessions</p></div>
+<div class="panel">
+<table><tr><th>MISSION</th><th>DATE</th><th>STATUS</th><th>RESULT</th></tr>
+<tbody id="historyTable"></tbody></table>
+</div>
+</div>
+
+<div id="settings" class="page">
+<div class="hero"><h1>SETTINGS</h1><p>Mission Control configuration</p></div>
+<div class="panel">
+<div class="row"><span>INTERFACE</span><span>MISSION CONTROL</span></div>
+<div class="row"><span>DATA MODE</span><span class="blue">LOCAL SIMULATION</span></div>
+<div class="row"><span>API CONNECTION</span><span class="amber">PENDING</span></div>
+<div class="row"><span>VERSION</span><span>2060 MC V1.0</span></div>
+</div>
+</div>
+
+</div>
+</main>
+</div>
+
+<script>
+let running=false,timer=null,seconds=0,altitude=0,velocity=0,fuel=100;
+
+function login(){
+ const u=document.getElementById("username").value.trim();
+ const p=document.getElementById("password").value.trim();
+ if(u==="admin"&&p==="2060"){
+  document.getElementById("login").style.display="none";
+  document.getElementById("app").style.display="grid";
+ }else document.getElementById("error").textContent="Invalid mission credentials";
+}
+
+document.getElementById("password").addEventListener("keydown",e=>{
+ if(e.key==="Enter")login();
+});
+
+function logout(){
+ running=false;clearInterval(timer);
+ document.getElementById("app").style.display="none";
+ document.getElementById("login").style.display="flex";
+}
+
+function showPage(id,btn){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+}
+
+function text(id,v){
+ const e=document.getElementById(id);if(e)e.textContent=v;
+}
+
+function update(){
+ if(!running)return;
+ seconds++;
+ altitude+=25;
+ velocity+=.08;
+ fuel=Math.max(0,fuel-.4);
+
+ text("status",altitude>=100?"ASCENT":"LAUNCH");
+ text("alt",altitude+" km");
+ text("vel",velocity.toFixed(2)+" km/s");
+ text("fuel",fuel.toFixed(1)+"%");
+ text("altT",altitude+" km");
+ text("velT",velocity.toFixed(2)+" km/s");
+ text("fuelT",fuel.toFixed(1)+"%");
+ text("tempT",(22+seconds*.15).toFixed(1)+" °C");
+ text("stage",altitude>=100?"ASCENT":"LIFTOFF");
+ text("phase",altitude>=100?"ASCENT":"LIFTOFF");
+ text("flightMode","ASCENT");
+ text("propulsion","ACTIVE");
+ text("propSys","ACTIVE");
+ text("orbitStatus",altitude>=200?"INSERTION":"ASCENT");
+
+ const pp=document.getElementById("propProgress");
+ if(pp)pp.style.width=Math.min(100,altitude/2)+"%";
+
+ const log=document.getElementById("log");
+ if(log){
+  log.innerHTML+="<br>[DATA] ALT "+altitude+" km | VEL "+velocity.toFixed(2)+" km/s | FUEL "+fuel.toFixed(1)+"%";
+  log.scrollTop=log.scrollHeight;
+ }
+
+ const h=String(Math.floor(seconds/3600)).padStart(2,"0");
+ const m=String(Math.floor(seconds%3600/60)).padStart(2,"0");
+ const s=String(seconds%60).padStart(2,"0");
+ text("missionTime",h+":"+m+":"+s);
+}
+
+function launchMission(){
+ running=true;
+ clearInterval(timer);
+ text("status","LAUNCH");
+ text("phase","LIFTOFF");
+ timer=setInterval(update,1000);
+ update();
+}
+
+function abortMission(){
+ running=false;clearInterval(timer);
+ text("status","ABORTED");
+ text("phase","ABORT");
+ text("flightMode","ABORTED");
+ text("propulsion","SAFE");
+ text("propSys","SAFE");
+ saveHistory("ABORTED");
+}
+
+function resetMission(){
+ running=false;clearInterval(timer);
+ seconds=0;altitude=0;velocity=0;fuel=100;
+ text("status","STANDBY");text("alt","0 km");text("vel","0.00 km/s");text("fuel","100%");
+ text("altT","0 km");text("velT","0.00 km/s");text("fuelT","100%");text("tempT","22 °C");
+ text("stage","GROUND");text("phase","PRE-LAUNCH");text("flightMode","STANDBY");
+ text("propulsion","STANDBY");text("propSys","STANDBY");text("orbitStatus","STANDBY");
+ const pp=document.getElementById("propProgress");if(pp)pp.style.width="0%";
+}
+
+function replayMission(){resetMission();setTimeout(launchMission,500)}
+
+function saveHistory(status){
+ let h=JSON.parse(localStorage.getItem("2060_history")||"[]");
+ h.unshift({mission:"MISSION ALPHA",date:new Date().toLocaleString(),status:status,result:"LOCAL SIMULATION"});
+ localStorage.setItem("2060_history",JSON.stringify(h));
+ renderHistory();
+}
+
+function renderHistory(){
+ const t=document.getElementById("historyTable");if(!t)return;
+ let h=JSON.parse(localStorage.getItem("2060_history")||"[]");
+ t.innerHTML=h.length?h.map(x=>"<tr><td>"+x.mission+"</td><td>"+x.date+"</td><td>"+x.status+"</td><td>"+x.result+"</td></tr>").join(""):"<tr><td colspan='4'>No completed mission records</td></tr>";
+}
+
+renderHistory();
+</script>
+</body>
+</html>

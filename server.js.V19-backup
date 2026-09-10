@@ -1,12 +1,9 @@
-const path = require('path');
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const db = require('./database');
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
-app.use(express.static(path.join(__dirname, 'frontend')));
 const PORT = process.env.PORT || 4000;
 
 app.use(cors());
@@ -23,7 +20,7 @@ let missions = [
   }
 ];
 
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     service: "2060 Mission Control API",
     status: "ONLINE",
@@ -71,10 +68,6 @@ app.get("/api/telemetry", (req, res) => {
   });
 });
 
-
-app.get('/api', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
-app.get('/', (req,res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.listen(PORT, () => {
   console.log(`2060 Mission Control API running on port ${PORT}`);
 });
